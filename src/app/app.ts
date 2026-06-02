@@ -3,6 +3,7 @@ import { NgTemplateOutlet } from '@angular/common';
 
 type Theme = 'dark' | 'light';
 type Tone = 'success' | 'warn' | 'danger';
+type CalendarTarget = 'primary' | 'workup';
 
 interface StateRule {
   pM: number;
@@ -166,6 +167,11 @@ export class App {
   storedDobValue = '';
   storedParsedDob: Date | null = null;
   yearsResult: ResultModel | null = null;
+  calendarTarget: CalendarTarget | null = null;
+  calYear = new Date().getFullYear();
+  calMonth = new Date().getMonth();
+  calTop = 0;
+  calLeft = 0;
 
   premOldInput = '';
   premNewInput = '';
@@ -644,6 +650,105 @@ export class App {
       };
     }
   }
+
+  openCalendar(target: CalendarTarget, input: HTMLInputElement): void {
+    if (this.calendarTarget === target) {
+      this.closeCalendar();
+      return;
+    }
+    this.calendarTarget = target;
+    const current = this.parseDate(input.value);
+    if (current) {
+      this.calYear = current.getFullYear();
+      this.calMonth = current.getMonth();
+    } else {
+      const now = new Date();
+      this.calYear = now.getFullYear();
+      this.calMonth = now.getMonth();
+    }
+    const rect = input.getBoundingClientRect();
+    const popW = 268;
+    const popH = 316;
+    let top = rect.bottom + 6;
+    let left = rect.left;
+    if (left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+    if (top + popH > window.innerHeight - 8) top = rect.top - popH - 6;
+    this.calTop = top;
+    this.calLeft = left;
+  }
+
+  closeCalendar(): void {
+    this.calendarTarget = null;
+  }
+
+  changeCalendarMonth(delta: number): void {
+    this.calMonth += delta;
+    if (this.calMonth < 0) {
+      this.calMonth = 11;
+      this.calYear--;
+    } else if (this.calMonth > 11) {
+      this.calMonth = 0;
+      this.calYear++;
+    }
+  }
+
+  changeCalendarYear(delta: number): void {
+    this.calYear += delta;
+  }
+
+  calendarBlanks(): number[] {
+    return Array.from({ length: new Date(this.calYear, this.calMonth, 1).getDay() }, (_, i) => i);
+  }
+
+  calendarDays(): number[] {
+    const days = new Date(this.calYear, this.calMonth + 1, 0).getDate();
+    return Array.from({ length: days }, (_, i) => i + 1);
+  }
+
+  calendarLabel(): string {
+    return `${this.months[this.calMonth]} ${this.calYear}`;
+  }
+
+  isCalendarToday(day: number): boolean {
+    const now = new Date();
+    return now.getFullYear() === this.calYear && now.getMonth() === this.calMonth && now.getDate() === day;
+  }
+
+  isCalendarSelected(day: number): boolean {
+    const selected = this.calendarTarget === 'primary'
+      ? this.parseDate(this.primaryDateInput)
+      : this.parseDate(this.workupInput);
+    return !!selected && selected.getFullYear() === this.calYear && selected.getMonth() === this.calMonth && selected.getDate() === day;
+  }
+
+  selectCalendarDay(day: number): void {
+    const picked = new Date(this.calYear, this.calMonth, day, 12, 0, 0);
+    if (this.calendarTarget === 'primary') {
+      this.primaryDateInput = this.formatDisplay(picked);
+      if (this.expMvrEnabled) this.parsedIssueDate = picked;
+      else this.parsedDob = picked;
+    } else if (this.calendarTarget === 'workup') {
+      this.workupInput = this.formatDisplay(picked);
+      this.parsedWorkup = picked;
+    }
+    this.yearsResult = null;
+    this.closeCalendar();
+  }
+
+  months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   parseCurrency(str: string): number | null {
     if (!str || !str.trim()) return null;
