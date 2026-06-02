@@ -1,4 +1,4 @@
-![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)
+[![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml)
 
 # ApWorkupAngular
 
