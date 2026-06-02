@@ -1,6 +1,6 @@
 [![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml)
 
-# ApWorkupAngular
+# Ap Workup Tool
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
 
