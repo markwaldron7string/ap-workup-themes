@@ -1,62 +1,128 @@
+# AP Workup Tool - Angular
+
 [![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml)
 
-# Ap Workup Tool
+Angular version of the AP Workup Tool. This project contains the same core calculators as `ap-workup-tool`, rebuilt as an Angular application with a component template, shared styling, Vitest unit tests, and GitHub Actions CI.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+## Calculators
 
-## Development server
+### Years Licensed Calculator
 
-To start a local development server, run:
+Calculates years licensed using the driver's date of birth, workup date, and state-specific permit/license age rules.
 
-```bash
-ng serve
-```
+Supports:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Exact calculation states: Massachusetts, North Carolina, California
+- New Jersey month-bracket output
+- Range output for other states
+- Optional age-first-licensed override
+- Optional original DL issue date override for supported states
 
-## Code scaffolding
+### Premium Workup Calculator
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Calculates percentage change between old and new premium values.
 
-```bash
-ng generate component component-name
-```
+Supports:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Premium increase, decrease, and flat-change output
+- Fixed fee exclusions
+- Clear/reset behavior
+- Light and dark theme toggle
 
-```bash
-ng generate --help
-```
+## Tech Stack
 
-## Building
+- Angular 21
+- TypeScript
+- pnpm
+- Vitest
+- jsdom
+- GitHub Actions
 
-To build the project run:
+## Getting Started
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Install dependencies:
 
 ```bash
-ng test
+pnpm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Start the local development server:
 
 ```bash
-ng e2e
+pnpm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Then open:
 
-## Additional Resources
+```text
+http://localhost:4200/
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# ap-workup-angular
+## Available Scripts
+
+Run the app locally:
+
+```bash
+pnpm start
+```
+
+Build for production:
+
+```bash
+pnpm build
+```
+
+Run unit tests in watch mode:
+
+```bash
+pnpm test
+```
+
+Run unit tests once for CI:
+
+```bash
+pnpm test:ci
+```
+
+## Testing
+
+Tests are written with Vitest through Angular's unit test builder.
+
+Current coverage includes:
+
+- Rendering both calculator headings
+- Premium calculator readiness state
+- Premium increase percentage calculation
+- Premium clear/reset behavior
+
+Spec files live beside the code they test. The main app spec is:
+
+```text
+src/app/app.spec.ts
+```
+
+## Continuous Integration
+
+GitHub Actions runs on pushes and pull requests to `main`.
+
+The CI workflow:
+
+1. Installs dependencies with pnpm
+2. Runs `pnpm test:ci`
+3. Runs `pnpm build`
+
+Workflow file:
+
+```text
+.github/workflows/ci.yml
+```
+
+## Original HTML Version
+
+The original static HTML version is kept separately as:
+
+```text
+ap-workup-tool
+```
+
+This Angular project is intended to preserve the same user-facing tool while making the codebase easier to test, maintain, and expand.
