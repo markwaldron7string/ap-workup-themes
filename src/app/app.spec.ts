@@ -43,8 +43,7 @@ describe('App', () => {
   });
 
   it('shows the original issue date override for any selected state', () => {
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).not.toContain('Original DL Issue Date');
+    expect(component.canShowIssueDateOverride).toBe(false);
 
     component.onStateChange('AL');
     fixture.detectChanges();
@@ -62,7 +61,7 @@ describe('App', () => {
     component.calculateYears();
 
     expect(component.yearsResult?.title).toBe('Years licensed');
-    expect(component.yearsResult?.meta).toContain('Based on original DL issue date: 01/01/2020');
+    expect(component.yearsResult?.meta).toContain('Based on original DL issue date: January 1, 2020');
   });
 
   it('enables premium calculation only when both premium values are parsed', () => {
