@@ -2,13 +2,15 @@
 
 # AP Workup Tool
 
-Angular version of the AP Workup Tool. This project contains the same core calculators as `ap-workup-tool`, rebuilt as an Angular application with a component template, shared styling, Vitest unit tests, and GitHub Actions CI.
+Insurance workup calculators for quickly checking driver experience and premium changes during underwriting or remarketing reviews.
+
+**Live demo:** [[ap-workup-tool.vercel.app](https://ap-workup-angular.vercel.app/)]
 
 ## Calculators
 
 ### Years Licensed Calculator
 
-Calculates years licensed using the driver's date of birth, workup date, and state-specific permit/license age rules.
+Calculates years licensed using the driver's date of birth, workup date (quote date), and state-specific permit/license age rules.
 
 Supports:
 
@@ -27,7 +29,7 @@ Supports:
 - Premium increase, decrease, and flat-change output
 - Fixed fee exclusions
 - Clear/reset behavior
-- Light and dark theme toggle
+- Light and dark theme toggle that persists: user's preference remains after user closes the app and returns. 
 
 ## Tech Stack
 
