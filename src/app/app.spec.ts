@@ -42,10 +42,7 @@ describe('App', () => {
     expect(compiled.textContent).toContain('PREMIUM WORKUP CALCULATOR');
   });
 
-  it('shows the original issue date override for any selected state', () => {
-    expect(component.canShowIssueDateOverride).toBe(false);
-
-    component.onStateChange('AL');
+  it('shows the original issue date override by default without a state selected', () => {
     fixture.detectChanges();
 
     expect(component.canShowIssueDateOverride).toBe(true);

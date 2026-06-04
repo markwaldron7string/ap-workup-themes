@@ -217,7 +217,7 @@ export class App {
   }
 
   get canShowIssueDateOverride(): boolean {
-    return !!this.selectedState;
+    return true;
   }
 
   get modeLabel(): string {
