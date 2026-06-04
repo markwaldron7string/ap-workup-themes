@@ -6,6 +6,8 @@ Insurance workup calculators for quickly checking driver experience and premium 
 
 **Live demo:** [ap-workup-angular.vercel.app](https://ap-workup-angular.vercel.app/)
 
+![AP Workup Tool screenshot](public/workuptool.png)
+
 ## Calculators
 
 ### Years Licensed Calculator
