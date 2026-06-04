@@ -42,6 +42,29 @@ describe('App', () => {
     expect(compiled.textContent).toContain('PREMIUM WORKUP CALCULATOR');
   });
 
+  it('shows the original issue date override for any selected state', () => {
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('Original DL Issue Date');
+
+    component.onStateChange('AL');
+    fixture.detectChanges();
+
+    expect(component.canShowIssueDateOverride).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Original DL Issue Date');
+  });
+
+  it('calculates years licensed from original issue date for a formerly excluded state', () => {
+    component.selectedState = 'AL';
+    component.expMvrEnabled = true;
+    component.parsedIssueDate = new Date(2020, 0, 1);
+    component.parsedWorkup = new Date(2025, 0, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.title).toBe('Years licensed');
+    expect(component.yearsResult?.meta).toContain('Based on original DL issue date: 01/01/2020');
+  });
+
   it('enables premium calculation only when both premium values are parsed', () => {
     expect(component.premiumReady).toBe(false);
 

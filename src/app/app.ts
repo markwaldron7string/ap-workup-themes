@@ -137,7 +137,6 @@ const STATE_NAMES: Record<string, string> = {
 };
 
 const EXACT_STATES = ['MA', 'NC', 'CA'];
-const MVR_STATES = ['NC', 'RI', 'TX'];
 
 @Component({
   selector: 'app-root',
@@ -217,8 +216,8 @@ export class App {
     return this.selectedState === 'NJ';
   }
 
-  get canShowMvr(): boolean {
-    return MVR_STATES.includes(this.selectedState);
+  get canShowIssueDateOverride(): boolean {
+    return !!this.selectedState;
   }
 
   get modeLabel(): string {
@@ -249,7 +248,7 @@ export class App {
   }
 
   updateExpPanels(): void {
-    if (this.canShowMvr) return;
+    if (this.canShowIssueDateOverride) return;
     if (this.expMvrEnabled) this.restoreDobMode();
     this.expMvrEnabled = false;
     this.expAgeEnabled = false;

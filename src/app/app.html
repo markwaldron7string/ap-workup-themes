@@ -107,11 +107,11 @@
 
       <div class="exp-divider"></div>
 
-      @if (canShowMvr) {
+      @if (canShowIssueDateOverride) {
         <div class="exp-panel" id="mvrPanel" [class.panel-disabled]="expAgeEnabled">
           <div class="exp-header">
             <div class="exp-header-left"><span class="exp-title">Original DL Issue Date</span></div>
-            <label class="toggle-switch" aria-label="Enable MVR issue date override">
+            <label class="toggle-switch" aria-label="Enable original issue date override">
               <input type="checkbox" [checked]="expMvrEnabled" (change)="toggleMvr(!expMvrEnabled)" />
               <span class="toggle-track"></span>
             </label>
@@ -119,7 +119,7 @@
         </div>
       }
 
-      <div class="exp-panel" id="agePanel" [class.panel-disabled]="canShowMvr && expMvrEnabled">
+      <div class="exp-panel" id="agePanel" [class.panel-disabled]="canShowIssueDateOverride && expMvrEnabled">
         <div class="exp-header">
           <div class="exp-header-left"><span class="exp-title">Age First Licensed</span></div>
           <label class="toggle-switch" aria-label="Enable age first licensed override">
