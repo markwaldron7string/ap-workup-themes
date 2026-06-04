@@ -175,6 +175,8 @@ export class App {
   premOldInput = '';
   premNewInput = '';
   premFeeInput = '';
+  origOldPrem: number | null = null;
+  origNewPrem: number | null = null;
   parsedOldPrem: number | null = null;
   parsedNewPrem: number | null = null;
   fixedFees: number[] = [];
@@ -529,28 +531,40 @@ export class App {
     };
   }
 
+  syncAdjustedPremiums(updateDisplay = true): void {
+    const total = this.fixedFeeTotal;
+    this.parsedOldPrem = this.origOldPrem !== null ? this.origOldPrem - total : null;
+    this.parsedNewPrem = this.origNewPrem !== null ? this.origNewPrem - total : null;
+    if (updateDisplay) {
+      if (this.origOldPrem !== null) this.premOldInput = this.fmtCurrency(this.origOldPrem - total);
+      if (this.origNewPrem !== null) this.premNewInput = this.fmtCurrency(this.origNewPrem - total);
+    }
+  }
+
   onPremiumInput(kind: 'old' | 'new', value: string): void {
     if (kind === 'old') {
       this.premOldInput = value;
-      this.parsedOldPrem = this.parseCurrency(value);
+      this.origOldPrem = this.parseCurrency(value);
     } else {
       this.premNewInput = value;
-      this.parsedNewPrem = this.parseCurrency(value);
+      this.origNewPrem = this.parseCurrency(value);
     }
+    this.syncAdjustedPremiums(false);
     this.premResult = null;
   }
 
   applyPremiumInput(kind: 'old' | 'new'): void {
     const value = kind === 'old' ? this.premOldInput : this.premNewInput;
     const parsed = this.parseCurrency(value);
-    if (kind === 'old') {
-      this.parsedOldPrem = parsed;
-      this.premOldInput = parsed !== null ? this.fmtCurrency(parsed) : value.trim();
-    } else {
-      this.parsedNewPrem = parsed;
-      this.premNewInput = parsed !== null ? this.fmtCurrency(parsed) : value.trim();
-    }
+    if (kind === 'old') this.origOldPrem = parsed;
+    else this.origNewPrem = parsed;
+    this.syncAdjustedPremiums();
     this.premResult = null;
+  }
+
+  restorePremiumOriginal(kind: 'old' | 'new'): void {
+    if (kind === 'old' && this.origOldPrem !== null) this.premOldInput = this.fmtCurrency(this.origOldPrem);
+    if (kind === 'new' && this.origNewPrem !== null) this.premNewInput = this.fmtCurrency(this.origNewPrem);
   }
 
   onFeeInput(value: string): void {
@@ -561,13 +575,26 @@ export class App {
   addFixedFee(): void {
     const fee = this.parseCurrency(this.premFeeInput);
     if (fee === null) return;
+    const newTotal = this.fixedFeeTotal + fee;
+    const adjOld = this.origOldPrem !== null ? this.origOldPrem - newTotal : null;
+    const adjNew = this.origNewPrem !== null ? this.origNewPrem - newTotal : null;
+    if ((adjOld !== null && adjOld <= 0) || (adjNew !== null && adjNew < 0)) {
+      this.premResult = {
+        tone: 'warn', icon: 'warn',
+        title: 'Fixed fee exceeds premium',
+        bodyHtml: `Adding a fee of <strong>$${this.fmtCurrency(fee)}</strong> would leave an adjusted old premium of <strong>$${adjOld !== null ? this.fmtCurrency(adjOld) : '—'}</strong> and adjusted new premium of <strong>$${adjNew !== null ? this.fmtCurrency(adjNew) : '—'}</strong>. Please verify the fee.`,
+      };
+      return;
+    }
     this.fixedFees.push(fee);
     this.premFeeInput = '';
+    this.syncAdjustedPremiums();
     this.premResult = null;
   }
 
   removeFixedFee(index: number): void {
     this.fixedFees.splice(index, 1);
+    this.syncAdjustedPremiums();
     this.premResult = null;
   }
 
@@ -575,6 +602,8 @@ export class App {
     this.premOldInput = '';
     this.premNewInput = '';
     this.premFeeInput = '';
+    this.origOldPrem = null;
+    this.origNewPrem = null;
     this.parsedOldPrem = null;
     this.parsedNewPrem = null;
     this.fixedFees = [];
@@ -582,7 +611,8 @@ export class App {
   }
 
   get premiumReady(): boolean {
-    return this.parsedOldPrem !== null && this.parsedNewPrem !== null;
+    return this.parsedOldPrem !== null && this.parsedOldPrem > 0
+        && this.parsedNewPrem !== null && this.parsedNewPrem >= 0;
   }
 
   get fixedFeeTotal(): number {
@@ -590,23 +620,12 @@ export class App {
   }
 
   calculatePremium(): void {
-    if (!this.premiumReady || this.parsedOldPrem === null || this.parsedNewPrem === null) return;
+    if (!this.premiumReady || this.parsedOldPrem === null || this.parsedOldPrem <= 0 || this.parsedNewPrem === null || this.parsedNewPrem < 0) return;
     const totalFees = this.fixedFeeTotal;
-    const adjOld = this.parsedOldPrem - totalFees;
-    const adjNew = this.parsedNewPrem - totalFees;
-    if (totalFees > 0 && (adjOld <= 0 || adjNew < 0)) {
-      this.premResult = {
-        tone: 'warn',
-        icon: 'warn',
-        title: 'Fixed fee exceeds premium',
-        bodyHtml: `The total fixed fees of <strong>$${this.fmtCurrency(totalFees)}</strong> would leave an adjusted old premium of <strong>$${this.fmtCurrency(adjOld)}</strong> and adjusted new premium of <strong>$${this.fmtCurrency(adjNew)}</strong>. Please verify the fees before calculating.`,
-      };
-      return;
-    }
-    const rawPct = (adjNew / adjOld - 1) * 100;
+    const rawPct = (this.parsedNewPrem / this.parsedOldPrem - 1) * 100;
     const pct = Math.round(rawPct * 10) / 10;
     const sign = pct > 0 ? '+' : '';
-    const meta = `$${this.fmtCurrency(adjOld)} → $${this.fmtCurrency(adjNew)}`;
+    const meta = `$${this.fmtCurrency(this.parsedOldPrem)} → $${this.fmtCurrency(this.parsedNewPrem)}`;
     const extraMeta = totalFees > 0 ? `Fixed fees excluded: $${this.fmtCurrency(totalFees)}` : undefined;
     if (pct > 0) {
       this.premResult = {
