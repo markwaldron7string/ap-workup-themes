@@ -1,6 +1,6 @@
-# AP Workup Tool - Angular
-
 [![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml)
+
+# AP Workup Tool - Angular
 
 Angular version of the AP Workup Tool. This project contains the same core calculators as `ap-workup-tool`, rebuilt as an Angular application with a component template, shared styling, Vitest unit tests, and GitHub Actions CI.
 
