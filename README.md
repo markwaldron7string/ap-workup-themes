@@ -4,7 +4,7 @@
 
 Insurance workup calculators for quickly checking driver experience and premium changes during underwriting or remarketing reviews.
 
-**Live demo:** [[ap-workup-tool.vercel.app](https://ap-workup-angular.vercel.app/)]
+**Live demo:** [ap-workup-tool.vercel.app](https://ap-workup-angular.vercel.app/)
 
 ## Calculators
 
