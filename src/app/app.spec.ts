@@ -42,6 +42,62 @@ describe('App', () => {
     expect(compiled.textContent).toContain('PREMIUM WORKUP CALCULATOR');
   });
 
+  it('aligns previously divergent state ages with the AP guideline table', () => {
+    const guidelineRules = [
+      ['CT', { pM: 192, lM: 192, pL: '16', lL: '16' }],
+      ['DE', { pM: 190, lM: 192, pL: '15y10m', lL: '16' }],
+      ['DC', { pM: 192, lM: 192, pL: '16', lL: '16' }],
+      ['HI', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['ID', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['KY', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['LA', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['MD', { pM: 189, lM: 192, pL: '15y9m', lL: '16' }],
+      ['MS', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['MT', { pM: 174, lM: 180, pL: '14½', lL: '15' }],
+      ['NM', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['NY', { pM: 192, lM: 192, pL: '16', lL: '16' }],
+      ['RI', { pM: 192, lM: 192, pL: '16', lL: '16' }],
+      ['SC', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['SD', { pM: 168, lM: 192, pL: '14', lL: '16' }],
+      ['WA', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+      ['WI', { pM: 180, lM: 192, pL: '15', lL: '16' }],
+    ] as const;
+
+    for (const [state, expected] of guidelineRules) {
+      expect(component.stateData[state]).toEqual(expected);
+    }
+  });
+
+  it('uses the guideline permit age when checking Hawaii eligibility', () => {
+    component.selectedState = 'HI';
+    component.parsedDob = new Date(2010, 0, 1);
+    component.parsedWorkup = new Date(2025, 1, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.title).toBe("Learner's permit age only — not yet licensed");
+  });
+
+  it('uses the guideline license age when checking New York eligibility', () => {
+    component.selectedState = 'NY';
+    component.parsedDob = new Date(2009, 0, 1);
+    component.parsedWorkup = new Date(2025, 1, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.title).toBe('Years licensed');
+  });
+
+  it('does not treat South Dakota restricted-minor age as regular license age', () => {
+    component.selectedState = 'SD';
+    component.parsedDob = new Date(2010, 0, 1);
+    component.parsedWorkup = new Date(2024, 6, 2);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.title).toBe("Learner's permit age only — not yet licensed");
+  });
+
   it('shows the original issue date override by default without a state selected', () => {
     fixture.detectChanges();
 
