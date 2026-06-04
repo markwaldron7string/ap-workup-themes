@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
 type Theme = 'dark' | 'light';
@@ -658,6 +658,15 @@ export class App {
         extraMeta,
       };
     }
+  }
+
+  @HostListener('document:pointerdown', ['$event'])
+  onDocumentPointerDown(event: PointerEvent): void {
+    if (!this.calendarTarget) return;
+    const popup = document.getElementById('calPopup');
+    if (popup?.contains(event.target as Node)) return;
+    if ((event.target as Element).closest?.('.cal-icon-btn')) return;
+    this.closeCalendar();
   }
 
   openCalendar(target: CalendarTarget, input: HTMLInputElement): void {
