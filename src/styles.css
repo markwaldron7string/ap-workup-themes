@@ -139,13 +139,14 @@ body {
 @media (min-width: 961px) {
   .years-card,
   .premium-card {
-    min-height: 346.2px;
+    min-height: 410px;
     display: flex;
     flex-direction: column;
   }
   .years-card .btn-row,
   .premium-card .btn-row {
     margin-top: auto;
+    padding-top: 1.25rem;
   }
 }
 

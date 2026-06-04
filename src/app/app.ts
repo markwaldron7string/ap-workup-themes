@@ -560,35 +560,14 @@ export class App {
 
   addFixedFee(): void {
     const fee = this.parseCurrency(this.premFeeInput);
-    if (fee === null || this.parsedOldPrem === null || this.parsedNewPrem === null) return;
-    const adjustedOld = this.parsedOldPrem - fee;
-    const adjustedNew = this.parsedNewPrem - fee;
-    if (adjustedOld <= 0 || adjustedNew < 0) {
-      this.premResult = {
-        tone: 'warn',
-        icon: 'warn',
-        title: 'Fixed fee exceeds premium',
-        bodyHtml: `The fixed fee of <strong>$${this.fmtCurrency(fee)}</strong> would leave an adjusted old premium of <strong>$${this.fmtCurrency(adjustedOld)}</strong> and adjusted new premium of <strong>$${this.fmtCurrency(adjustedNew)}</strong>. Please verify the fee before adding it.`,
-      };
-      return;
-    }
+    if (fee === null) return;
     this.fixedFees.push(fee);
-    this.parsedOldPrem = adjustedOld;
-    this.parsedNewPrem = adjustedNew;
-    this.premOldInput = this.fmtCurrency(adjustedOld);
-    this.premNewInput = this.fmtCurrency(adjustedNew);
     this.premFeeInput = '';
     this.premResult = null;
   }
 
   removeFixedFee(index: number): void {
-    const [fee] = this.fixedFees.splice(index, 1);
-    if (fee !== undefined && this.parsedOldPrem !== null && this.parsedNewPrem !== null) {
-      this.parsedOldPrem += fee;
-      this.parsedNewPrem += fee;
-      this.premOldInput = this.fmtCurrency(this.parsedOldPrem);
-      this.premNewInput = this.fmtCurrency(this.parsedNewPrem);
-    }
+    this.fixedFees.splice(index, 1);
     this.premResult = null;
   }
 
@@ -612,11 +591,23 @@ export class App {
 
   calculatePremium(): void {
     if (!this.premiumReady || this.parsedOldPrem === null || this.parsedNewPrem === null) return;
-    const rawPct = (this.parsedNewPrem / this.parsedOldPrem - 1) * 100;
+    const totalFees = this.fixedFeeTotal;
+    const adjOld = this.parsedOldPrem - totalFees;
+    const adjNew = this.parsedNewPrem - totalFees;
+    if (totalFees > 0 && (adjOld <= 0 || adjNew < 0)) {
+      this.premResult = {
+        tone: 'warn',
+        icon: 'warn',
+        title: 'Fixed fee exceeds premium',
+        bodyHtml: `The total fixed fees of <strong>$${this.fmtCurrency(totalFees)}</strong> would leave an adjusted old premium of <strong>$${this.fmtCurrency(adjOld)}</strong> and adjusted new premium of <strong>$${this.fmtCurrency(adjNew)}</strong>. Please verify the fees before calculating.`,
+      };
+      return;
+    }
+    const rawPct = (adjNew / adjOld - 1) * 100;
     const pct = Math.round(rawPct * 10) / 10;
     const sign = pct > 0 ? '+' : '';
-    const meta = `$${this.fmtCurrency(this.parsedOldPrem)} → $${this.fmtCurrency(this.parsedNewPrem)}`;
-    const extraMeta = this.fixedFeeTotal > 0 ? `Fixed fees excluded: $${this.fmtCurrency(this.fixedFeeTotal)}` : undefined;
+    const meta = `$${this.fmtCurrency(adjOld)} → $${this.fmtCurrency(adjNew)}`;
+    const extraMeta = totalFees > 0 ? `Fixed fees excluded: $${this.fmtCurrency(totalFees)}` : undefined;
     if (pct > 0) {
       this.premResult = {
         tone: 'success',
