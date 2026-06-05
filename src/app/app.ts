@@ -559,15 +559,15 @@ export class App {
     const value = kind === 'old' ? this.premOldInput : this.premNewInput;
     const parsed = this.parseCurrency(value);
     const orig = parsed !== null ? parsed + this.fixedFeeTotal : null;
+    const prev = kind === 'old' ? this.origOldPrem : this.origNewPrem;
     if (kind === 'old') this.origOldPrem = orig;
     else this.origNewPrem = orig;
     this.syncAdjustedPremiums();
-    this.premResult = null;
+    if (orig !== prev) this.premResult = null;
   }
 
   onFeeInput(value: string): void {
     this.premFeeInput = value;
-    this.premResult = null;
   }
 
   addFixedFee(): void {
