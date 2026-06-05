@@ -566,6 +566,18 @@ export class App {
     if (orig !== prev) this.premResult = null;
   }
 
+  guardDateKey(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey) return;
+    if (['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
+    if (!/[\d/]/.test(event.key)) event.preventDefault();
+  }
+
+  guardDecimalKey(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey) return;
+    if (['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
+    if (!/[\d.]/.test(event.key)) event.preventDefault();
+  }
+
   onFeeInput(value: string): void {
     this.premFeeInput = value;
   }
