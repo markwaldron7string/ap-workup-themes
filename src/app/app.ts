@@ -569,7 +569,11 @@ export class App {
   guardDateKey(event: KeyboardEvent): void {
     if (event.ctrlKey || event.metaKey) return;
     if (['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
-    if (!/[\d/]/.test(event.key)) event.preventDefault();
+    if (!/[\d/]/.test(event.key)) { event.preventDefault(); return; }
+    if (/\d/.test(event.key)) {
+      const digits = (event.target as HTMLInputElement).value.replace(/\D/g, '');
+      if (digits.length >= 8) event.preventDefault();
+    }
   }
 
   guardDecimalKey(event: KeyboardEvent): void {
