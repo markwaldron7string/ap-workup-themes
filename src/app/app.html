@@ -206,13 +206,13 @@
       <div class="field">
         <label for="premOldInput">Old Premium</label>
         <div class="currency-wrap">
-          <input #oldPrem type="text" class="currency-input" id="premOldInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premOldInput" (input)="onPremiumInput('old', oldPrem.value)" (blur)="applyPremiumInput('old')" (focus)="restorePremiumOriginal('old')" />
+          <input #oldPrem type="text" class="currency-input" id="premOldInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premOldInput" (input)="onPremiumInput('old', oldPrem.value)" (blur)="applyPremiumInput('old')" />
         </div>
       </div>
       <div class="field" style="margin-bottom: 0">
         <label for="premNewInput">New Premium</label>
         <div class="currency-wrap">
-          <input #newPrem type="text" class="currency-input" id="premNewInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premNewInput" (input)="onPremiumInput('new', newPrem.value)" (blur)="applyPremiumInput('new')" (focus)="restorePremiumOriginal('new')" />
+          <input #newPrem type="text" class="currency-input" id="premNewInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premNewInput" (input)="onPremiumInput('new', newPrem.value)" (blur)="applyPremiumInput('new')" />
         </div>
       </div>
 

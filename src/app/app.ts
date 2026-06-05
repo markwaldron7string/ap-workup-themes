@@ -542,12 +542,14 @@ export class App {
   }
 
   onPremiumInput(kind: 'old' | 'new', value: string): void {
+    const parsed = this.parseCurrency(value);
+    const orig = parsed !== null ? parsed + this.fixedFeeTotal : null;
     if (kind === 'old') {
       this.premOldInput = value;
-      this.origOldPrem = this.parseCurrency(value);
+      this.origOldPrem = orig;
     } else {
       this.premNewInput = value;
-      this.origNewPrem = this.parseCurrency(value);
+      this.origNewPrem = orig;
     }
     this.syncAdjustedPremiums(false);
     this.premResult = null;
@@ -556,15 +558,11 @@ export class App {
   applyPremiumInput(kind: 'old' | 'new'): void {
     const value = kind === 'old' ? this.premOldInput : this.premNewInput;
     const parsed = this.parseCurrency(value);
-    if (kind === 'old') this.origOldPrem = parsed;
-    else this.origNewPrem = parsed;
+    const orig = parsed !== null ? parsed + this.fixedFeeTotal : null;
+    if (kind === 'old') this.origOldPrem = orig;
+    else this.origNewPrem = orig;
     this.syncAdjustedPremiums();
     this.premResult = null;
-  }
-
-  restorePremiumOriginal(kind: 'old' | 'new'): void {
-    if (kind === 'old' && this.origOldPrem !== null) this.premOldInput = this.fmtCurrency(this.origOldPrem);
-    if (kind === 'new' && this.origNewPrem !== null) this.premNewInput = this.fmtCurrency(this.origNewPrem);
   }
 
   onFeeInput(value: string): void {
