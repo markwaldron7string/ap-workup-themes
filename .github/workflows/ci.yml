@@ -34,3 +34,12 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Start app and run E2E tests
+        run: |
+          pnpm start &
+          npx wait-on http://localhost:4200 --timeout 60000
+          npx playwright test
