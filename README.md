@@ -26,6 +26,7 @@ Supports:
 - Range output for other states
 - Optional age-first-licensed override
 - Optional original DL issue date override for supported states
+- One-click copy button on each result card
 
 ### Premium Workup Calculator
 
@@ -36,7 +37,8 @@ Supports:
 - Premium increase, decrease, and flat-change output
 - Fixed fee exclusions
 - Clear/reset behavior
-- Light and dark theme toggle that persists: user's preference remains after user closes the app and returns. 
+- One-click copy button on each result card — copies the result to the clipboard in a clean plain-text format
+- Light and dark theme toggle that persists: user's preference remains after user closes the app and returns.
 
 ## Tech Stack
 
