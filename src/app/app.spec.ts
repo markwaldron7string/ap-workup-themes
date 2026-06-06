@@ -117,6 +117,39 @@ describe('App', () => {
     expect(component.yearsResult?.meta).toContain('Based on original DL issue date: January 1, 2020');
   });
 
+  it('prepares range years clipboard text without the year label', () => {
+    component.selectedState = 'TX';
+    component.parsedDob = new Date(2000, 0, 1);
+    component.parsedWorkup = new Date(2017, 6, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.badge).toBe('1 – 2 years');
+    expect(component.yearsResult?.copyText).toBe('1-2');
+  });
+
+  it('prepares exact years clipboard text as only the numeric value', () => {
+    component.selectedState = 'MA';
+    component.parsedDob = new Date(1990, 0, 1);
+    component.parsedWorkup = new Date(2024, 0, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.tileNum).toBe(17);
+    expect(component.yearsResult?.copyText).toBe('17');
+  });
+
+  it('prepares New Jersey clipboard text with the month bracket intact', () => {
+    component.selectedState = 'NJ';
+    component.parsedDob = new Date(2000, 0, 1);
+    component.parsedWorkup = new Date(2017, 2, 1);
+
+    component.calculateYears();
+
+    expect(component.yearsResult?.badge).toBe('13 – 18 months');
+    expect(component.yearsResult?.copyText).toBe('13-18 months');
+  });
+
   it('enables premium calculation only when both premium values are parsed', () => {
     expect(component.premiumReady).toBe(false);
 
@@ -136,6 +169,15 @@ describe('App', () => {
     expect(component.premResult?.title).toBe('Premium increase');
     expect(component.premResult?.premiumPct).toBe('+12.5%');
     expect(component.premResult?.premiumClass).toBe('increase');
+  });
+
+  it('prepares premium clipboard text as labeled rows', () => {
+    component.parsedOldPrem = 100;
+    component.parsedNewPrem = 200;
+
+    component.calculatePremium();
+
+    expect(component.premResult?.copyText).toBe('Old premium: $100\nNew premium: $200\n% difference: 100%');
   });
 
   it('clears premium values and result state', () => {

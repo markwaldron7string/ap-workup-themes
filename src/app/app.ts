@@ -22,6 +22,7 @@ interface ResultModel {
   tone: Tone;
   icon: 'check' | 'warn' | 'x' | 'up' | 'down' | 'flat';
   title: string;
+  copyText?: string;
   bodyHtml?: string;
   tileNum?: number;
   tileLabel?: string;
@@ -181,6 +182,8 @@ export class App {
   parsedNewPrem: number | null = null;
   fixedFees: number[] = [];
   premResult: ResultModel | null = null;
+  copiedText = '';
+  private copyResetHandle: number | null = null;
 
   constructor() {
     const savedTheme = (localStorage.getItem('calcTheme') as Theme | null) || 'dark';
@@ -457,6 +460,7 @@ export class App {
               icon: 'check',
               title: 'Months licensed',
               badge: bracket,
+              copyText: this.formatNjClipboardText(bracket),
               meta: "Bracket keyed to driver's age at workup date",
             };
       return;
@@ -473,6 +477,7 @@ export class App {
           title: 'Years licensed',
           tileNum: diff.years,
           tileLabel: diff.years === 1 ? 'year' : 'years',
+          copyText: String(diff.years),
           meta: `License eligible from ${this.fmtDate(licenseDate)}`,
         };
       } else {
@@ -504,11 +509,13 @@ export class App {
   renderLicensedOutput(code: string, startDate: Date, workup: Date, title: string, meta: string): ResultModel {
     const diff = this.dateDiff(startDate, workup);
     if (code === 'NJ') {
+      const badge = this.getNJElapsedRange(diff);
       return {
         tone: 'success',
         icon: 'check',
         title: 'Months licensed',
-        badge: this.getNJElapsedRange(diff),
+        badge,
+        copyText: this.formatNjClipboardText(badge),
         meta: `${meta} · ${diff.years} yr ${diff.months} mo ${diff.days} d as of workup date`,
       };
     }
@@ -519,14 +526,17 @@ export class App {
         title,
         tileNum: diff.years,
         tileLabel: diff.years === 1 ? 'year' : 'years',
+        copyText: String(diff.years),
         meta,
       };
     }
+    const badge = this.getRange(diff);
     return {
       tone: 'success',
       icon: 'check',
       title,
-      badge: this.getRange(diff),
+      badge,
+      copyText: this.formatRangeClipboardText(badge),
       meta: `${meta} · ${diff.years} yr ${diff.months} mo ${diff.days} d as of workup date`,
     };
   }
@@ -641,11 +651,13 @@ export class App {
     const sign = pct > 0 ? '+' : '';
     const meta = `$${this.fmtCurrency(this.parsedOldPrem)} → $${this.fmtCurrency(this.parsedNewPrem)}`;
     const extraMeta = totalFees > 0 ? `Fixed fees excluded: $${this.fmtCurrency(totalFees)}` : undefined;
+    const copyText = this.formatPremiumClipboardText(this.parsedOldPrem, this.parsedNewPrem, pct);
     if (pct > 0) {
       this.premResult = {
         tone: 'success',
         icon: 'up',
         title: 'Premium increase',
+        copyText,
         premiumPct: `${sign}${pct.toFixed(1)}%`,
         premiumClass: 'increase',
         meta,
@@ -656,6 +668,7 @@ export class App {
         tone: 'danger',
         icon: 'down',
         title: 'Premium decrease',
+        copyText,
         premiumPct: `${pct.toFixed(1)}%`,
         premiumClass: 'decrease',
         meta,
@@ -666,12 +679,25 @@ export class App {
         tone: 'success',
         icon: 'flat',
         title: 'No change',
+        copyText,
         premiumPct: '0.0%',
         premiumClass: 'flat',
         meta,
         extraMeta,
       };
     }
+  }
+
+  async copyResult(text: string): Promise<void> {
+    const copied = await this.writeClipboardText(text);
+    if (!copied) return;
+
+    this.copiedText = text;
+    if (this.copyResetHandle !== null) window.clearTimeout(this.copyResetHandle);
+    this.copyResetHandle = window.setTimeout(() => {
+      if (this.copiedText === text) this.copiedText = '';
+      this.copyResetHandle = null;
+    }, 1500);
   }
 
   @HostListener('document:pointerdown', ['$event'])
@@ -790,6 +816,67 @@ export class App {
 
   fmtCurrency(val: number): string {
     return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  formatClipboardCurrency(val: number): string {
+    const roundedCents = Math.round(Math.abs(val) * 100) % 100;
+    return val.toLocaleString('en-US', {
+      minimumFractionDigits: roundedCents === 0 ? 0 : 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  formatPremiumClipboardText(oldPrem: number, newPrem: number, pct: number): string {
+    return [
+      `Old premium: $${this.formatClipboardCurrency(oldPrem)}`,
+      `New premium: $${this.formatClipboardCurrency(newPrem)}`,
+      `% difference: ${this.formatClipboardPercent(pct)}%`,
+    ].join('\n');
+  }
+
+  formatClipboardPercent(pct: number): string {
+    return Number.isInteger(pct) ? pct.toFixed(0) : pct.toFixed(1);
+  }
+
+  formatRangeClipboardText(label: string): string {
+    return label
+      .replace(/\s*[\u2013-]\s*/g, '-')
+      .replace(/\s+years?$/i, '')
+      .toLowerCase();
+  }
+
+  formatNjClipboardText(label: string): string {
+    return label.replace(/\s*[\u2013-]\s*/g, '-');
+  }
+
+  private async writeClipboardText(text: string): Promise<boolean> {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        return this.writeClipboardTextFallback(text);
+      }
+    }
+
+    return this.writeClipboardTextFallback(text);
+  }
+
+  private writeClipboardTextFallback(text: string): boolean {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      return document.execCommand('copy');
+    } finally {
+      document.body.removeChild(textarea);
+    }
   }
 
   parseDate(str: string): Date | null {

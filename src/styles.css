@@ -344,6 +344,31 @@ input.date-input.invalid, input.currency-input.invalid {
 .danger .result-title { color: var(--danger); }
 .result-body { font-size: 14px; color: var(--result-body); line-height: 1.65; }
 .result-body strong { font-weight: 500; }
+.result-copy-btn {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(34,211,160,.25);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--success);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+.result-copy-btn:hover,
+.result-copy-btn.copied {
+  background: var(--range-bg);
+  border-color: rgba(34,211,160,.45);
+}
+.result-copy-btn:active { transform: scale(.96); }
+.result-copy-btn svg { width: 16px; height: 16px; pointer-events: none; }
+[data-theme="light"] .result-copy-btn { border-color: rgba(15,158,118,.3); }
+[data-theme="light"] .result-copy-btn:hover,
+[data-theme="light"] .result-copy-btn.copied { border-color: rgba(15,158,118,.5); }
 
 .tiles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 .tile {
