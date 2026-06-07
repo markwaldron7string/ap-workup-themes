@@ -263,9 +263,9 @@ export class App {
   }
 
   onPrimaryDateInput(value: string): void {
-    this.primaryDateInput = this.autoSlash(value);
+    this.primaryDateInput = this.formatDateInput(value);
     this.yearsResult = null;
-    const parsed = this.primaryDateInput.length === 10 ? this.parseDate(this.primaryDateInput) : null;
+    const parsed = this.isCompleteDateInput(this.primaryDateInput) ? this.parseDate(this.primaryDateInput) : null;
     if (this.expMvrEnabled) this.parsedIssueDate = parsed;
     else this.parsedDob = parsed;
   }
@@ -279,9 +279,9 @@ export class App {
   }
 
   onWorkupInput(value: string): void {
-    this.workupInput = this.autoSlash(value);
+    this.workupInput = this.formatDateInput(value);
     this.yearsResult = null;
-    this.parsedWorkup = this.workupInput.length === 10 ? this.parseDate(this.workupInput) : null;
+    this.parsedWorkup = this.isCompleteDateInput(this.workupInput) ? this.parseDate(this.workupInput) : null;
   }
 
   applyWorkupInput(): void {
@@ -578,11 +578,32 @@ export class App {
 
   guardDateKey(event: KeyboardEvent): void {
     if (event.ctrlKey || event.metaKey) return;
-    if (['Backspace','Delete','Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
-    if (!/[\d/]/.test(event.key)) { event.preventDefault(); return; }
-    if (/\d/.test(event.key)) {
-      const digits = (event.target as HTMLInputElement).value.replace(/\D/g, '');
-      if (digits.length >= 8) event.preventDefault();
+    const input = event.target as HTMLInputElement;
+    const selectionStart = input.selectionStart ?? input.value.length;
+    const selectionEnd = input.selectionEnd ?? selectionStart;
+
+    if (['Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      if (selectionStart !== selectionEnd) return;
+      const adjacentIndex = event.key === 'Backspace' ? selectionStart - 1 : selectionStart;
+      if (input.value[adjacentIndex] === '/') {
+        event.preventDefault();
+        const nextPosition = event.key === 'Backspace' ? Math.max(0, adjacentIndex) : adjacentIndex + 1;
+        input.setSelectionRange(nextPosition, nextPosition);
+      }
+      return;
+    }
+
+    if (!/\d/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+
+    const selectedText = input.value.slice(selectionStart, selectionEnd);
+    const currentDigitCount = input.value.replace(/\D/g, '').length;
+    const selectedDigitCount = selectedText.replace(/\D/g, '').length;
+    if (currentDigitCount - selectedDigitCount >= 8) {
+      event.preventDefault();
     }
   }
 
@@ -885,14 +906,14 @@ export class App {
     let m: string | undefined;
     let d: string | undefined;
     let y: string | undefined;
-    let match = trimmed.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})$/);
+    let match = trimmed.match(/^(\d{4})\s*[/-]\s*(\d{1,2})\s*[/-]\s*(\d{1,2})$/);
     if (match) [, y, m, d] = match;
     if (!y) {
-      match = trimmed.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+      match = trimmed.match(/^(\d{1,2})\s*[/-]\s*(\d{1,2})\s*[/-]\s*(\d{4})$/);
       if (match) [, m, d, y] = match;
     }
     if (!y) {
-      match = trimmed.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2})$/);
+      match = trimmed.match(/^(\d{1,2})\s*[/-]\s*(\d{1,2})\s*[/-]\s*(\d{2})$/);
       if (match) {
         [, m, d, y] = match;
         y = `${parseInt(y, 10) <= 30 ? '20' : '19'}${y}`;
@@ -907,11 +928,28 @@ export class App {
     return isNaN(date.getTime()) ? null : date;
   }
 
-  autoSlash(value: string): string {
+  formatDateInput(value: string): string {
     const digits = value.replace(/\D/g, '').slice(0, 8);
-    if (digits.length > 4) return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
-    if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
-    return digits;
+    if (!digits) return '';
+
+    const month = this.capDateSegment(digits.slice(0, 2), 12);
+    const day = digits.length > 2 ? this.capDateSegment(digits.slice(2, 4), 31) : '';
+    const year = digits.length > 4 ? digits.slice(4) : '';
+
+    if (digits.length > 4) return `${month}/${day}/${year}`;
+    if (digits.length > 2) return `${month}/${day}/`;
+    return `${month}/`;
+  }
+
+  isCompleteDateInput(value: string): boolean {
+    return value.replace(/\D/g, '').length === 8;
+  }
+
+  capDateSegment(value: string, max: number): string {
+    if (value.length < 2) return value;
+    const numericValue = parseInt(value, 10);
+    if (isNaN(numericValue) || numericValue <= max) return value;
+    return String(max).padStart(2, '0');
   }
 
   formatDisplay(date: Date): string {

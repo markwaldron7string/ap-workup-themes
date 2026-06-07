@@ -117,6 +117,60 @@ describe('App', () => {
     expect(component.yearsResult?.meta).toContain('Based on original DL issue date: January 1, 2020');
   });
 
+  it('allows selected date digits to be replaced when the date already has eight digits', () => {
+    const input = document.createElement('input');
+    input.value = '01/23/4567';
+    input.setSelectionRange(0, 2);
+    const event = new KeyboardEvent('keydown', { key: '9', cancelable: true });
+    Object.defineProperty(event, 'target', { value: input });
+
+    component.guardDateKey(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('keeps date slashes from being removed with backspace or delete', () => {
+    const input = document.createElement('input');
+    input.value = '01/23/4567';
+    input.setSelectionRange(3, 3);
+    const backspace = new KeyboardEvent('keydown', { key: 'Backspace', cancelable: true });
+    Object.defineProperty(backspace, 'target', { value: input });
+
+    component.guardDateKey(backspace);
+
+    expect(backspace.defaultPrevented).toBe(true);
+    expect(input.value).toBe('01/23/4567');
+    expect(input.selectionStart).toBe(2);
+
+    input.setSelectionRange(2, 2);
+    const deleteKey = new KeyboardEvent('keydown', { key: 'Delete', cancelable: true });
+    Object.defineProperty(deleteKey, 'target', { value: input });
+
+    component.guardDateKey(deleteKey);
+
+    expect(deleteKey.defaultPrevented).toBe(true);
+    expect(input.value).toBe('01/23/4567');
+    expect(input.selectionStart).toBe(3);
+  });
+
+  it('formats date input with protected separators and caps month and day entries', () => {
+    expect(component.formatDateInput('')).toBe('');
+    expect(component.formatDateInput('1')).toBe('1/');
+    expect(component.formatDateInput('13')).toBe('12/');
+    expect(component.formatDateInput('1232')).toBe('12/31/');
+    expect(component.formatDateInput('12/31/2026')).toBe('12/31/2026');
+  });
+
+  it('keeps date rollover behavior after masked date input is applied', () => {
+    component.onPrimaryDateInput('06/31/2026');
+
+    expect(component.primaryDateInput).toBe('06/31/2026');
+
+    component.applyPrimaryDateInput();
+
+    expect(component.primaryDateInput).toBe('07/01/2026');
+  });
+
   it('prepares range years clipboard text without the year label', () => {
     component.selectedState = 'TX';
     component.parsedDob = new Date(2000, 0, 1);
