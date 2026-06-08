@@ -417,7 +417,7 @@ export class App {
         this.yearsResult = {
           tone: 'warn',
           icon: 'warn',
-          title: "Learner's permit age only — not yet licensed",
+          title: "Learner's permit age only - not yet licensed",
           bodyHtml: `The entered age of <strong>${this.expAgeValue}</strong> falls within the learner's permit range for ${this.stateName(code)}. The minimum license age is <strong>${cfg.lL}</strong>.<br><br>Years licensed cannot be calculated from a permit-only age.`,
         };
       } else {
@@ -493,7 +493,7 @@ export class App {
       this.yearsResult = {
         tone: 'warn',
         icon: 'warn',
-        title: "Learner's permit age only — not yet licensed",
+        title: "Learner's permit age only - not yet licensed",
         bodyHtml: `As of the workup date, this driver is old enough for a learner's permit in ${this.stateName(code)} but has not yet reached the minimum age for a regular license.<br><br><strong style="color:var(--warn)">Regular license eligible from: ${this.fmtDate(licenseDate)}</strong>`,
       };
     } else {
@@ -627,7 +627,7 @@ export class App {
       this.premResult = {
         tone: 'warn', icon: 'warn',
         title: 'Fixed fee exceeds premium',
-        bodyHtml: `Adding a fee of <strong>$${this.fmtCurrency(fee)}</strong> would leave an adjusted old premium of <strong>$${adjOld !== null ? this.fmtCurrency(adjOld) : '—'}</strong> and adjusted new premium of <strong>$${adjNew !== null ? this.fmtCurrency(adjNew) : '—'}</strong>. Please verify the fee.`,
+        bodyHtml: `Adding a fee of <strong>$${this.fmtCurrency(fee)}</strong> would leave an adjusted old premium of <strong>$${adjOld !== null ? this.fmtCurrency(adjOld) : '-'}</strong> and adjusted new premium of <strong>$${adjNew !== null ? this.fmtCurrency(adjNew) : '-'}</strong>. Please verify the fee.`,
       };
       return;
     }

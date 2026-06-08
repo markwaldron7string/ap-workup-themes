@@ -75,7 +75,7 @@ describe('App', () => {
 
     component.calculateYears();
 
-    expect(component.yearsResult?.title).toBe("Learner's permit age only — not yet licensed");
+    expect(component.yearsResult?.title).toBe("Learner's permit age only - not yet licensed");
   });
 
   it('uses the guideline license age when checking New York eligibility', () => {
@@ -95,7 +95,7 @@ describe('App', () => {
 
     component.calculateYears();
 
-    expect(component.yearsResult?.title).toBe("Learner's permit age only — not yet licensed");
+    expect(component.yearsResult?.title).toBe("Learner's permit age only - not yet licensed");
   });
 
   it('shows the original issue date override by default without a state selected', () => {

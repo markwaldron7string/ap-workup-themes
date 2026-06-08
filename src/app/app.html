@@ -36,7 +36,7 @@
           <optgroup label="Months Licensed (NJ)">
             <option value="NJ">New Jersey (NJ)</option>
           </optgroup>
-          <optgroup label="All Other States — Range Output">
+          <optgroup label="All Other States - Range Output">
             @for (state of otherStates; track state.code) {
               <option [value]="state.code">{{ state.name }} ({{ state.code }})</option>
             }
@@ -131,7 +131,7 @@
         </div>
         @if (expAgeEnabled) {
           <div class="exp-content">
-            <p class="exp-hint">A note or MVR indicates the age at which the driver was first licensed. Enter it below — decimals accepted (e.g. 16.5).</p>
+            <p class="exp-hint">A note or MVR indicates the age at which the driver was first licensed. Enter it below - decimals accepted (e.g. 16.5).</p>
             <label for="ageInput">Age When First Licensed</label>
             <input
               #ageField

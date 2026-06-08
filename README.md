@@ -37,7 +37,7 @@ Supports:
 - Premium increase, decrease, and flat-change output
 - Fixed fee exclusions
 - Clear/reset behavior
-- One-click copy button on each result card — copies the result to the clipboard in a clean plain-text format
+- One-click copy button on each result card - copies the result to the clipboard in a clean plain-text format
 - Light and dark theme toggle that persists: user's preference remains after user closes the app and returns.
 
 ## Tech Stack
