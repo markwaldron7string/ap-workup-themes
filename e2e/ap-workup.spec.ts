@@ -74,7 +74,7 @@ test.describe('Years Licensed Calculator', () => {
   });
 
   test('Test 4: Massachusetts shows an exact year count (tile)', async ({ page }) => {
-    // MA is an exact-calculation state — result shows a numeric tile, not a range badge
+    // MA is an exact-calculation state - result shows a numeric tile, not a range badge
     await fillYearsCalc(page, 'MA', dobAgo(30));
     await expect(page.locator('.tile-num')).toBeVisible();
     await expect(page.locator('.tile-num')).toContainText(/^\d+$/);
