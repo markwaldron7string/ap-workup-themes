@@ -231,7 +231,7 @@ describe('App', () => {
 
     component.calculatePremium();
 
-    expect(component.premResult?.copyText).toBe('Old premium: $100\nNew premium: $200\n% difference: 100%');
+    expect(component.premResult?.copyText).toBe('Old premium: $100\nNew premium: $200\n% Difference: 100%');
   });
 
   it('clears premium values and result state', () => {
