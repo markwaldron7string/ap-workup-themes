@@ -362,8 +362,11 @@ input.date-input.invalid, input.currency-input.invalid {
   transition: opacity .25s ease, background .15s, border-color .15s, transform .1s;
 }
 .result:hover .result-copy-btn,
-.result-copy-btn.copied,
-.result-copy-btn:focus-visible {
+.result-copy-btn.copied {
+  opacity: 1;
+  pointer-events: auto;
+}
+.result:hover .result-copy-btn:focus-visible {
   opacity: 1;
   pointer-events: auto;
 }

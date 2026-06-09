@@ -225,6 +225,27 @@ describe('App', () => {
     expect(component.premResult?.premiumClass).toBe('increase');
   });
 
+  it('shows copied feedback immediately without waiting for clipboard', () => {
+    vi.useFakeTimers();
+    const writeText = vi.fn().mockImplementation(
+      () => new Promise<void>((resolve) => window.setTimeout(resolve, 100)),
+    );
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    component.copyResult('17', { currentTarget: { blur: vi.fn() } } as unknown as Event);
+
+    expect(component.copiedText()).toBe('17');
+    expect(writeText).toHaveBeenCalledWith('17');
+
+    vi.advanceTimersByTime(2000);
+    expect(component.copiedText()).toBe('');
+
+    vi.useRealTimers();
+  });
+
   it('prepares premium clipboard text as labeled rows', () => {
     component.parsedOldPrem = 100;
     component.parsedNewPrem = 200;

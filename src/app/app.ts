@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
 type Theme = 'dark' | 'light';
@@ -182,7 +182,7 @@ export class App {
   parsedNewPrem: number | null = null;
   fixedFees: number[] = [];
   premResult: ResultModel | null = null;
-  copiedText = '';
+  copiedText = signal('');
   private copyResetHandle: number | null = null;
 
   constructor() {
@@ -709,16 +709,19 @@ export class App {
     }
   }
 
-  async copyResult(text: string): Promise<void> {
-    const copied = await this.writeClipboardText(text);
-    if (!copied) return;
+  copyResult(text: string, event: Event): void {
+    const button = event.currentTarget as HTMLButtonElement;
 
-    this.copiedText = text;
+    this.copiedText.set(text);
     if (this.copyResetHandle !== null) window.clearTimeout(this.copyResetHandle);
     this.copyResetHandle = window.setTimeout(() => {
-      if (this.copiedText === text) this.copiedText = '';
+      if (this.copiedText() === text) this.copiedText.set('');
       this.copyResetHandle = null;
-    }, 3000);
+      button.blur();
+    }, 2000);
+
+    button.blur();
+    void this.writeClipboardText(text);
   }
 
   @HostListener('document:pointerdown', ['$event'])
