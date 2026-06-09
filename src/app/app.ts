@@ -859,7 +859,7 @@ export class App {
   }
 
   formatClipboardPercent(pct: number): string {
-    return Number.isInteger(pct) ? pct.toFixed(0) : pct.toFixed(1);
+    return pct.toFixed(1);
   }
 
   formatRangeClipboardText(label: string): string {
