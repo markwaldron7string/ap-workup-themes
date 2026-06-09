@@ -126,7 +126,8 @@ body {
 [data-theme="light"] .icon-sun { display: block; }
 [data-theme="light"] .icon-moon { display: none; }
 
-.important-note { font-size: 13px; font-weight: 600; color: var(--muted); }
+.important-note { font-size: 15px; font-weight: 600; color: var(--muted); }
+.mvr-note { font-size: 13px; font-weight: 600; color: var(--muted); }
 
 .card {
   background: var(--surface);
@@ -528,3 +529,6 @@ input.date-input.invalid, input.currency-input.invalid {
 
 .red { color: #e03030; }
 [data-theme="light"] .red { color: #cc2222; }
+
+.blue { color: #2f54d4; }
+[data-theme="light"] .blue { color: #2a45aa; }
