@@ -22,6 +22,8 @@
   --success: #22d3a0;
   --success-bg: rgba(34,211,160,0.07);
   --success-bd: rgba(34,211,160,0.25);
+  --copy-icon-grad-start: #9af5dc;
+  --copy-icon-grad-end: #15996f;
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -49,6 +51,8 @@
   --success: #0f9e76;
   --success-bg: rgba(15,158,118,0.08);
   --success-bd: rgba(15,158,118,0.28);
+  --copy-icon-grad-start: #6ee7bc;
+  --copy-icon-grad-end: #0a7d5c;
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
   --warn-bd: rgba(184,125,0,0.28);
@@ -396,7 +400,7 @@ input.date-input.invalid, input.currency-input.invalid {
   inset: 0;
   width: 16px;
   height: 16px;
-  background-color: var(--success);
+  background: linear-gradient(to top right, var(--copy-icon-grad-start), var(--copy-icon-grad-end));
   -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
   mask: url('/copy-icon.png') center / contain no-repeat;
   pointer-events: none;
