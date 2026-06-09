@@ -718,7 +718,7 @@ export class App {
     this.copyResetHandle = window.setTimeout(() => {
       if (this.copiedText === text) this.copiedText = '';
       this.copyResetHandle = null;
-    }, 1500);
+    }, 3000);
   }
 
   @HostListener('document:pointerdown', ['$event'])
@@ -851,7 +851,7 @@ export class App {
     return [
       `Old premium: $${this.formatClipboardCurrency(oldPrem)}`,
       `New premium: $${this.formatClipboardCurrency(newPrem)}`,
-      `% difference: ${this.formatClipboardPercent(pct)}%`,
+      `% Difference: ${this.formatClipboardPercent(pct)}%`,
     ].join('\n');
   }
 

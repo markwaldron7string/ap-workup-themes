@@ -357,7 +357,15 @@ input.date-input.invalid, input.currency-input.invalid {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background .15s, border-color .15s, transform .1s;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, background .15s, border-color .15s, transform .1s;
+}
+.result:hover .result-copy-btn,
+.result-copy-btn.copied,
+.result-copy-btn:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 .result-copy-btn:hover,
 .result-copy-btn.copied {
@@ -365,7 +373,22 @@ input.date-input.invalid, input.currency-input.invalid {
   border-color: rgba(34,211,160,.45);
 }
 .result-copy-btn:active { transform: scale(.96); }
-.result-copy-btn svg { width: 16px; height: 16px; pointer-events: none; }
+.result-copy-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.result-copy-icon svg {
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  transition: opacity .25s ease;
+}
+.result-copy-btn:not(.copied) .check-icon { opacity: 0; }
+.result-copy-btn.copied .copy-icon { opacity: 0; }
+.result-copy-btn.copied .check-icon { opacity: 1; }
 [data-theme="light"] .result-copy-btn { border-color: rgba(15,158,118,.3); }
 [data-theme="light"] .result-copy-btn:hover,
 [data-theme="light"] .result-copy-btn.copied { border-color: rgba(15,158,118,.5); }
