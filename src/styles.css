@@ -390,6 +390,8 @@ input.date-input.invalid, input.currency-input.invalid {
   transition: opacity .25s ease;
 }
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
+.result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
+.result:hover .result-copy-btn:not(.copied) .copy-icon { opacity: 1; }
 .result-copy-btn.copied .copy-icon { opacity: 0; }
 .result-copy-btn.copied .check-icon { opacity: 1; }
 [data-theme="light"] .result-copy-btn { border-color: rgba(15,158,118,.3); }
