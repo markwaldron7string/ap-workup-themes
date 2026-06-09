@@ -388,6 +388,18 @@ input.date-input.invalid, input.currency-input.invalid {
   inset: 0;
   width: 16px;
   height: 16px;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.result-copy-icon .copy-icon {
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  background-color: var(--success);
+  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
+  mask: url('/copy-icon.png') center / contain no-repeat;
+  pointer-events: none;
   transition: opacity .25s ease;
 }
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }

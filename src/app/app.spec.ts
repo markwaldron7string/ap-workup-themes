@@ -129,28 +129,49 @@ describe('App', () => {
     expect(event.defaultPrevented).toBe(false);
   });
 
-  it('keeps date slashes from being removed with backspace or delete', () => {
+  it('deletes the previous digit in one backspace when the cursor is after a slash', () => {
     const input = document.createElement('input');
-    input.value = '01/23/4567';
-    input.setSelectionRange(3, 3);
+    input.id = 'dobInput';
+    input.value = '02/14/1999';
+    input.setSelectionRange(6, 6);
     const backspace = new KeyboardEvent('keydown', { key: 'Backspace', cancelable: true });
     Object.defineProperty(backspace, 'target', { value: input });
 
     component.guardDateKey(backspace);
 
     expect(backspace.defaultPrevented).toBe(true);
-    expect(input.value).toBe('01/23/4567');
-    expect(input.selectionStart).toBe(2);
+    expect(component.primaryDateInput).toBe('02/11/999');
+    expect(input.selectionStart).toBe(4);
+    expect(input.selectionEnd).toBe(4);
+  });
 
-    input.setSelectionRange(2, 2);
+  it('deletes the next digit in one delete when the cursor is on a slash', () => {
+    const input = document.createElement('input');
+    input.id = 'dobInput';
+    input.value = '02/14/1999';
+    input.setSelectionRange(5, 5);
     const deleteKey = new KeyboardEvent('keydown', { key: 'Delete', cancelable: true });
     Object.defineProperty(deleteKey, 'target', { value: input });
 
     component.guardDateKey(deleteKey);
 
     expect(deleteKey.defaultPrevented).toBe(true);
-    expect(input.value).toBe('01/23/4567');
-    expect(input.selectionStart).toBe(3);
+    expect(component.primaryDateInput).toBe('02/14/999');
+    expect(input.selectionStart).toBe(5);
+    expect(input.selectionEnd).toBe(5);
+  });
+
+  it('preserves the cursor position after date input is reformatted', () => {
+    const input = document.createElement('input');
+    input.id = 'dobInput';
+    input.value = '02/1/1999';
+    input.setSelectionRange(4, 4);
+
+    component.onPrimaryDateInput(input);
+
+    expect(component.primaryDateInput).toBe('02/11/999');
+    expect(input.selectionStart).toBe(4);
+    expect(input.selectionEnd).toBe(4);
   });
 
   it('formats date input with protected separators and caps month and day entries', () => {
@@ -162,7 +183,11 @@ describe('App', () => {
   });
 
   it('keeps date rollover behavior after masked date input is applied', () => {
-    component.onPrimaryDateInput('06/31/2026');
+    const input = document.createElement('input');
+    input.id = 'dobInput';
+    input.value = '06/31/2026';
+
+    component.onPrimaryDateInput(input);
 
     expect(component.primaryDateInput).toBe('06/31/2026');
 

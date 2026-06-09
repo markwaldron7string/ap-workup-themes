@@ -262,12 +262,8 @@ export class App {
     this.parsedIssueDate = null;
   }
 
-  onPrimaryDateInput(value: string): void {
-    this.primaryDateInput = this.formatDateInput(value);
-    this.yearsResult = null;
-    const parsed = this.isCompleteDateInput(this.primaryDateInput) ? this.parseDate(this.primaryDateInput) : null;
-    if (this.expMvrEnabled) this.parsedIssueDate = parsed;
-    else this.parsedDob = parsed;
+  onPrimaryDateInput(input: HTMLInputElement): void {
+    this.updateDateInput(input, input.value);
   }
 
   applyPrimaryDateInput(): void {
@@ -276,12 +272,11 @@ export class App {
       if (this.expMvrEnabled) this.parsedIssueDate = parsed;
       else this.parsedDob = parsed;
     });
+    this.syncDateInputElement('dobInput', this.primaryDateInput);
   }
 
-  onWorkupInput(value: string): void {
-    this.workupInput = this.formatDateInput(value);
-    this.yearsResult = null;
-    this.parsedWorkup = this.isCompleteDateInput(this.workupInput) ? this.parseDate(this.workupInput) : null;
+  onWorkupInput(input: HTMLInputElement): void {
+    this.updateDateInput(input, input.value);
   }
 
   applyWorkupInput(): void {
@@ -289,6 +284,7 @@ export class App {
       this.workupInput = value;
       this.parsedWorkup = parsed;
     });
+    this.syncDateInputElement('workupInput', this.workupInput);
   }
 
   applyDateValue(value: string, setter: (value: string, parsed: Date | null) => void): void {
@@ -338,12 +334,14 @@ export class App {
     this.primaryDateInput = '';
     this.parsedDob = null;
     this.parsedIssueDate = null;
+    this.syncDateInputElement('dobInput', '');
   }
 
   restoreDobMode(): void {
     this.primaryDateInput = this.storedDobValue;
     this.parsedDob = this.storedParsedDob;
     this.parsedIssueDate = null;
+    this.syncDateInputElement('dobInput', this.primaryDateInput);
   }
 
   onAgeInput(value: string): void {
@@ -367,6 +365,8 @@ export class App {
     this.storedDobValue = '';
     this.storedParsedDob = null;
     this.yearsResult = null;
+    this.syncDateInputElement('dobInput', '');
+    this.syncDateInputElement('workupInput', '');
   }
 
   calculateYears(): void {
@@ -585,12 +585,27 @@ export class App {
     if (['Tab','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return;
     if (event.key === 'Backspace' || event.key === 'Delete') {
       if (selectionStart !== selectionEnd) return;
+
       const adjacentIndex = event.key === 'Backspace' ? selectionStart - 1 : selectionStart;
-      if (input.value[adjacentIndex] === '/') {
-        event.preventDefault();
-        const nextPosition = event.key === 'Backspace' ? Math.max(0, adjacentIndex) : adjacentIndex + 1;
-        input.setSelectionRange(nextPosition, nextPosition);
+      if (input.value[adjacentIndex] !== '/') return;
+
+      let deleteIndex = adjacentIndex;
+      if (event.key === 'Backspace') {
+        while (deleteIndex >= 0 && input.value[deleteIndex] === '/') deleteIndex--;
+        if (deleteIndex < 0) {
+          event.preventDefault();
+          return;
+        }
+      } else {
+        while (deleteIndex < input.value.length && input.value[deleteIndex] === '/') deleteIndex++;
+        if (deleteIndex >= input.value.length) {
+          event.preventDefault();
+          return;
+        }
       }
+
+      event.preventDefault();
+      this.applyDateInputDeletion(input, deleteIndex);
       return;
     }
 
@@ -605,6 +620,55 @@ export class App {
     if (currentDigitCount - selectedDigitCount >= 8) {
       event.preventDefault();
     }
+  }
+
+  private applyDateInputDeletion(input: HTMLInputElement, deleteIndex: number): void {
+    const cursor = input.selectionStart ?? input.value.length;
+    const digitsBefore = input.value.slice(0, cursor).replace(/\D/g, '').length;
+    const deletedDigit = /\d/.test(input.value[deleteIndex]);
+    const newDigitsBefore = deletedDigit && deleteIndex < cursor ? digitsBefore - 1 : digitsBefore;
+    const newValue = input.value.slice(0, deleteIndex) + input.value.slice(deleteIndex + 1);
+    this.updateDateInput(input, newValue, newDigitsBefore);
+  }
+
+  private updateDateInput(input: HTMLInputElement, value: string, digitsBeforeCursor?: number): void {
+    const cursor = input.selectionStart ?? value.length;
+    const digitsBefore = digitsBeforeCursor ?? value.slice(0, cursor).replace(/\D/g, '').length;
+    const formatted = this.formatDateInput(value);
+
+    if (input.id === 'dobInput') {
+      this.primaryDateInput = formatted;
+      const parsed = this.isCompleteDateInput(formatted) ? this.parseDate(formatted) : null;
+      if (this.expMvrEnabled) this.parsedIssueDate = parsed;
+      else this.parsedDob = parsed;
+    } else if (input.id === 'workupInput') {
+      this.workupInput = formatted;
+      this.parsedWorkup = this.isCompleteDateInput(formatted) ? this.parseDate(formatted) : null;
+    }
+
+    this.yearsResult = null;
+    const newCursor = this.getDateInputCursorPosition(formatted, digitsBefore);
+    input.value = formatted;
+    input.setSelectionRange(newCursor, newCursor);
+  }
+
+  private syncDateInputElement(inputId: 'dobInput' | 'workupInput', value: string): void {
+    const input = document.getElementById(inputId) as HTMLInputElement | null;
+    if (input) input.value = value;
+  }
+
+  private getDateInputCursorPosition(formatted: string, digitsBefore: number): number {
+    if (digitsBefore <= 0) return 0;
+
+    let count = 0;
+    for (let i = 0; i < formatted.length; i++) {
+      if (/\d/.test(formatted[i])) {
+        count++;
+        if (count === digitsBefore) return i + 1;
+      }
+    }
+
+    return formatted.length;
   }
 
   guardDecimalKey(event: KeyboardEvent): void {
@@ -805,13 +869,16 @@ export class App {
 
   selectCalendarDay(day: number): void {
     const picked = new Date(this.calYear, this.calMonth, day, 12, 0, 0);
-    if (this.calendarTarget === 'primary') {
+    const target = this.calendarTarget;
+    if (target === 'primary') {
       this.primaryDateInput = this.formatDisplay(picked);
       if (this.expMvrEnabled) this.parsedIssueDate = picked;
       else this.parsedDob = picked;
-    } else if (this.calendarTarget === 'workup') {
+      this.syncDateInputElement('dobInput', this.primaryDateInput);
+    } else if (target === 'workup') {
       this.workupInput = this.formatDisplay(picked);
       this.parsedWorkup = picked;
+      this.syncDateInputElement('workupInput', this.workupInput);
     }
     this.yearsResult = null;
     this.closeCalendar();
