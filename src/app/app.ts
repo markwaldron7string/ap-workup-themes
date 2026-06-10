@@ -606,6 +606,7 @@ export class App {
 
       event.preventDefault();
       this.applyDateInputDeletion(input, deleteIndex);
+      if (event.key === 'Delete') input.setSelectionRange(selectionStart, selectionStart);
       return;
     }
 
