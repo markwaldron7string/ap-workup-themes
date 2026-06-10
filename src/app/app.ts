@@ -664,7 +664,11 @@ export class App {
     for (let i = 0; i < formatted.length; i++) {
       if (/\d/.test(formatted[i])) {
         count++;
-        if (count === digitsBefore) return i + 1;
+        if (count === digitsBefore) {
+          const pos = i + 1;
+          if ((digitsBefore === 2 || digitsBefore === 4) && formatted[pos] === '/') return pos + 1;
+          return pos;
+        }
       }
     }
 
