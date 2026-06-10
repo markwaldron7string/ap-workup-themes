@@ -6,13 +6,13 @@
   --blue-hover: #2748bc;
   --blue-glow: rgba(47,84,212,0.25);
   --bg: #000;
-  --surface: #111;
-  --surface-2: #1a1a1a;
-  --border: #2a2a2a;
+  --surface: #202020;
+  --surface-2: #363636;
+  --border: #6969695d;
   --text: #f2f2f2;
   --muted: #c7c7c7;
   --label: #a7a7a7;
-  --meta: #666;
+  --meta: #cfcfcf;
   --result-body: #aaa;
   --clear-color: #888;
   --clear-hover: #bbb;
