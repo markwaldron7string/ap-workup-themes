@@ -546,5 +546,5 @@ input.date-input.invalid, input.currency-input.invalid {
 .red { color: #e03030; }
 [data-theme="light"] .red { color: #cc2222; }
 
-.blue { color: #2f54d4; }
-[data-theme="light"] .blue { color: #2a45aa; }
+.blue { color: #95a7e9; }
+[data-theme="light"] .blue { color: #516fdb; font-weight: 700; }
