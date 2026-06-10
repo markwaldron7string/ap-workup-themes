@@ -283,6 +283,7 @@ input.date-input.invalid, input.currency-input.invalid {
 .fee-remove-btn:hover { background: var(--surface-2); color: var(--text); }
 .fee-total { font-size: 12px; color: var(--meta); margin-top: 9px; display: none; }
 .fee-total.show { display: block; }
+.prem-orig-ref { font-size: 12px; color: var(--meta); margin-top: 1rem; padding: 8px 10px; background: var(--surface-2); border-radius: 6px; }
 
 .btn-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 1.25rem; }
 .btn {
