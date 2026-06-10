@@ -180,6 +180,8 @@ export class App {
   origNewPrem: number | null = null;
   parsedOldPrem: number | null = null;
   parsedNewPrem: number | null = null;
+  premOldDisplayIsNet = false;
+  premNewDisplayIsNet = false;
   fixedFees: number[] = [];
   premResult: ResultModel | null = null;
   copiedText = signal('');
@@ -546,20 +548,27 @@ export class App {
     this.parsedOldPrem = this.origOldPrem !== null ? this.origOldPrem - total : null;
     this.parsedNewPrem = this.origNewPrem !== null ? this.origNewPrem - total : null;
     if (updateDisplay) {
-      if (this.origOldPrem !== null) this.premOldInput = this.fmtCurrency(this.origOldPrem - total);
-      if (this.origNewPrem !== null) this.premNewInput = this.fmtCurrency(this.origNewPrem - total);
+      if (this.origOldPrem !== null) {
+        this.premOldInput = this.fmtCurrency(this.origOldPrem - total);
+        this.premOldDisplayIsNet = true;
+      }
+      if (this.origNewPrem !== null) {
+        this.premNewInput = this.fmtCurrency(this.origNewPrem - total);
+        this.premNewDisplayIsNet = true;
+      }
     }
   }
 
   onPremiumInput(kind: 'old' | 'new', value: string): void {
     const parsed = this.parseCurrency(value);
-    const orig = parsed !== null ? parsed + this.fixedFeeTotal : null;
     if (kind === 'old') {
       this.premOldInput = value;
-      this.origOldPrem = orig;
+      this.origOldPrem = parsed;
+      this.premOldDisplayIsNet = false;
     } else {
       this.premNewInput = value;
-      this.origNewPrem = orig;
+      this.origNewPrem = parsed;
+      this.premNewDisplayIsNet = false;
     }
     this.syncAdjustedPremiums(false);
     this.premResult = null;
@@ -567,8 +576,9 @@ export class App {
 
   applyPremiumInput(kind: 'old' | 'new'): void {
     const value = kind === 'old' ? this.premOldInput : this.premNewInput;
+    const isNet = kind === 'old' ? this.premOldDisplayIsNet : this.premNewDisplayIsNet;
     const parsed = this.parseCurrency(value);
-    const orig = parsed !== null ? parsed + this.fixedFeeTotal : null;
+    const orig = parsed !== null ? (isNet ? parsed + this.fixedFeeTotal : parsed) : null;
     const prev = kind === 'old' ? this.origOldPrem : this.origNewPrem;
     if (kind === 'old') this.origOldPrem = orig;
     else this.origNewPrem = orig;
@@ -720,6 +730,8 @@ export class App {
     this.origNewPrem = null;
     this.parsedOldPrem = null;
     this.parsedNewPrem = null;
+    this.premOldDisplayIsNet = false;
+    this.premNewDisplayIsNet = false;
     this.fixedFees = [];
     this.premResult = null;
   }
