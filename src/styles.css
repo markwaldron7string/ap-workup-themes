@@ -547,4 +547,4 @@ input.date-input.invalid, input.currency-input.invalid {
 [data-theme="light"] .red { color: #cc2222; }
 
 .blue { color: #95a7e9; }
-[data-theme="light"] .blue { color: #516fdb; font-weight: bold; }
+[data-theme="light"] .blue { color: #516fdb; }
