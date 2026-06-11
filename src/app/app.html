@@ -242,11 +242,10 @@
             </span>
           }
         </div>
-        <div class="fee-total" [class.show]="fixedFeeTotal > 0">Fixed fees: ${{ fmtCurrency(fixedFeeTotal) }}</div>
       </div>
 
       @if (fixedFeeTotal > 0 && origOldPrem !== null && origNewPrem !== null) {
-        <div class="prem-orig-ref">Old premium: ${{ fmtCurrency(origOldPrem) }}&nbsp;&nbsp;→&nbsp;&nbsp;New premium: ${{ fmtCurrency(origNewPrem) }}</div>
+        <div class="prem-orig-ref">Orig old premium: ${{ fmtCurrency(origOldPrem) }}&nbsp;&nbsp;→&nbsp;&nbsp;Orig new premium: ${{ fmtCurrency(origNewPrem) }}&nbsp;&nbsp;→&nbsp;&nbsp;Fixed fees: ${{ fmtCurrency(fixedFeeTotal) }}</div>
       }
 
       <div class="btn-row">
