@@ -220,13 +220,14 @@ describe('App', () => {
 
   it('prepares New Jersey clipboard text with the month bracket intact', () => {
     component.selectedState = 'NJ';
+    // DOB 2000-01-01, workup 2017-03-01 → license-eligible 2017-01-01 → 2 months licensed
     component.parsedDob = new Date(2000, 0, 1);
     component.parsedWorkup = new Date(2017, 2, 1);
 
     component.calculateYears();
 
-    expect(component.yearsResult?.badge).toBe('13 – 18 months');
-    expect(component.yearsResult?.copyText).toBe('13-18 months');
+    expect(component.yearsResult?.badge).toBe('0 – 6 months');
+    expect(component.yearsResult?.copyText).toBe('0-6 months');
   });
 
   it('enables premium calculation only when both premium values are parsed', () => {

@@ -449,22 +449,31 @@ export class App {
     if (this.isNj) {
       const bracket = this.getNJBracket(dob, workup);
       const permitDate = this.addMonths(dob, cfg.pM);
-      this.yearsResult =
-        bracket === null
-          ? {
-              tone: 'danger',
-              icon: 'x',
-              title: "Not yet eligible for a learner's permit",
-              bodyHtml: `As of the workup date, this driver has not yet reached the minimum permit age in New Jersey (age 16).<br><br><strong style="color:var(--danger)">Permit eligible from: ${this.fmtDate(permitDate)}</strong>`,
-            }
-          : {
-              tone: 'success',
-              icon: 'check',
-              title: 'Months licensed',
-              badge: bracket,
-              copyText: this.formatNjClipboardText(bracket),
-              meta: "Bracket keyed to driver's age at workup date",
-            };
+      const licenseDate = this.addMonths(dob, cfg.lM);
+      if (bracket === null) {
+        this.yearsResult = {
+          tone: 'danger',
+          icon: 'x',
+          title: "Not yet eligible for a learner's permit",
+          bodyHtml: `As of the workup date, this driver has not yet reached the minimum permit age in New Jersey (age 16).<br><br><strong style="color:var(--danger)">Permit eligible from: ${this.fmtDate(permitDate)}</strong>`,
+        };
+      } else if (bracket === 'permit') {
+        this.yearsResult = {
+          tone: 'warn',
+          icon: 'warn',
+          title: "Learner's permit age only - not yet licensed",
+          bodyHtml: `As of the workup date, this driver is old enough for a learner's permit in New Jersey but has not yet reached the minimum license age (17).<br><br><strong style="color:var(--warn)">Regular license eligible from: ${this.fmtDate(licenseDate)}</strong>`,
+        };
+      } else {
+        this.yearsResult = {
+          tone: 'success',
+          icon: 'check',
+          title: 'Months licensed',
+          badge: bracket,
+          copyText: this.formatNjClipboardText(bracket),
+          meta: "Bracket keyed to driver's age at workup date",
+        };
+      }
       return;
     }
 
@@ -1090,20 +1099,22 @@ export class App {
   }
 
   getNJBracket(dob: Date, workup: Date): string | null {
-    const age16 = this.addMonths(dob, 192);
-    const age16h = this.addMonths(dob, 198);
-    const age17 = this.addMonths(dob, 204);
-    const age17h = this.addMonths(dob, 210);
-    const age18 = this.addMonths(dob, 216);
-    const age18h = this.addMonths(dob, 222);
-    const age19 = this.addMonths(dob, 228);
-    if (workup < age16) return null;
-    if (workup < age16h) return '0 – 6 months';
-    if (workup < age17) return '7 – 12 months';
-    if (workup < age17h) return '13 – 18 months';
-    if (workup < age18) return '19 – 24 months';
-    if (workup < age18h) return '25 – 30 months';
-    if (workup < age19) return '31 – 35 months';
+    const permitAge = this.addMonths(dob, 192);  // age 16 — permit eligible
+    const licenseAge = this.addMonths(dob, 204); // age 17 — license eligible
+    const m6  = this.addMonths(dob, 210);        // 6 months licensed
+    const m12 = this.addMonths(dob, 216);        // 12 months licensed
+    const m18 = this.addMonths(dob, 222);        // 18 months licensed
+    const m24 = this.addMonths(dob, 228);        // 24 months licensed
+    const m30 = this.addMonths(dob, 234);        // 30 months licensed
+    const m36 = this.addMonths(dob, 240);        // 36 months licensed
+    if (workup < permitAge)  return null;
+    if (workup < licenseAge) return 'permit';
+    if (workup < m6)         return '0 – 6 months';
+    if (workup < m12)        return '7 – 12 months';
+    if (workup < m18)        return '13 – 18 months';
+    if (workup < m24)        return '19 – 24 months';
+    if (workup < m30)        return '25 – 30 months';
+    if (workup < m36)        return '31 – 35 months';
     return 'More than 36 months';
   }
 }
