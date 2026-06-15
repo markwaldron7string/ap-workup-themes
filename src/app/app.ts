@@ -1033,8 +1033,10 @@ export class App {
     const year = digits.length > 4 ? digits.slice(4) : '';
 
     if (digits.length > 4) return `${month}/${day}/${year}`;
-    if (digits.length > 2) return `${month}/${day}/`;
-    return `${month}/`;
+    if (digits.length === 4) return `${month}/${day}/`;
+    if (digits.length > 2) return `${month}/${day}`;
+    if (digits.length === 2) return `${month}/`;
+    return month;
   }
 
   isCompleteDateInput(value: string): boolean {

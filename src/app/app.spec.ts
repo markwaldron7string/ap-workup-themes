@@ -176,8 +176,9 @@ describe('App', () => {
 
   it('formats date input with protected separators and caps month and day entries', () => {
     expect(component.formatDateInput('')).toBe('');
-    expect(component.formatDateInput('1')).toBe('1/');
+    expect(component.formatDateInput('1')).toBe('1');
     expect(component.formatDateInput('13')).toBe('12/');
+    expect(component.formatDateInput('123')).toBe('12/3');
     expect(component.formatDateInput('1232')).toBe('12/31/');
     expect(component.formatDateInput('12/31/2026')).toBe('12/31/2026');
   });
