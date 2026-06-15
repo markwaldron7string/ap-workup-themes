@@ -13,6 +13,7 @@
   --muted: #c7c7c7;
   --label: #a7a7a7;
   --meta: #cfcfcf;
+  --placeholder: #787878;
   --result-body: #aaa;
   --clear-color: #888;
   --clear-hover: #bbb;
@@ -43,6 +44,7 @@
   --muted: #444450;
   --label: #666672;
   --meta: #888890;
+  --placeholder: #b0b0b8;
   --result-body: #444450;
   --clear-color: #555560;
   --clear-hover: #222;
@@ -194,7 +196,7 @@ select {
   background-position: right 13px center;
   padding-right: 36px;
 }
-input.date-input::placeholder, input.currency-input::placeholder { color: var(--meta); }
+input.date-input::placeholder, input.currency-input::placeholder { color: var(--placeholder); }
 input.date-input.invalid, input.currency-input.invalid {
   border-color: var(--danger);
   box-shadow: 0 0 0 3px rgba(240,68,68,0.15);
