@@ -471,7 +471,7 @@ export class App {
           title: 'Months licensed',
           badge: bracket,
           copyText: this.formatNjClipboardText(bracket),
-          meta: "Bracket keyed to driver's age at workup date",
+          meta: `License eligible from ${this.fmtDate(licenseDate)}`,
         };
       }
       return;
