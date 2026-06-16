@@ -489,7 +489,7 @@ export class App {
           tileNum: diff.years,
           tileLabel: diff.years === 1 ? 'year' : 'years',
           copyText: String(diff.years),
-          meta: `License eligible from ${this.fmtDate(licenseDate)}`,
+          meta: `License eligible from ${this.fmtDate(licenseDate)} · ${diff.years} yr ${diff.months} mo ${diff.days} d as of workup date`,
         };
       } else {
         this.yearsResult = this.renderLicensedOutput(
@@ -538,7 +538,7 @@ export class App {
         tileNum: diff.years,
         tileLabel: diff.years === 1 ? 'year' : 'years',
         copyText: String(diff.years),
-        meta,
+        meta: `${meta} · ${diff.years} yr ${diff.months} mo ${diff.days} d as of workup date`,
       };
     }
     const badge = this.getRange(diff);
