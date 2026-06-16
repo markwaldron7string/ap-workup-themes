@@ -465,13 +465,14 @@ export class App {
           bodyHtml: `As of the workup date, this driver is old enough for a learner's permit in New Jersey but has not yet reached the minimum license age (17).<br><br><strong style="color:var(--warn)">Regular license eligible from: ${this.fmtDate(licenseDate)}</strong>`,
         };
       } else {
+        const diff = this.dateDiff(licenseDate, workup);
         this.yearsResult = {
           tone: 'success',
           icon: 'check',
           title: 'Months licensed',
           badge: bracket,
           copyText: this.formatNjClipboardText(bracket),
-          meta: `License eligible from ${this.fmtDate(licenseDate)}`,
+          meta: `License eligible from ${this.fmtDate(licenseDate)} · ${diff.years} yr ${diff.months} mo ${diff.days} d as of workup date`,
         };
       }
       return;
