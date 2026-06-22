@@ -5,8 +5,8 @@
   <p class="mvr-note">Before calculating based on age, review MVR.</p>
 </div>
 
-<div class="page-grid">
-  <div>
+<div class="page-grid" [class.page-grid--paired]="yearsResult && premResult">
+  <div class="calc-column">
     <header class="header">
       <div class="logo-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -174,7 +174,7 @@
     }
   </div>
 
-  <div>
+  <div class="calc-column">
     <header class="header">
       <div class="logo-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">

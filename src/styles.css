@@ -96,6 +96,61 @@ body {
   gap: 2.5rem;
   align-items: start;
 }
+@media (min-width: 961px) {
+  .page-grid {
+    grid-template-rows: auto 1fr auto;
+    align-items: stretch;
+    gap: 1rem 2.5rem;
+  }
+
+  .calc-column {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    min-width: 0;
+  }
+
+  .calc-column > .header {
+    margin-bottom: 0;
+  }
+
+  .calc-column > .card {
+    margin-bottom: 0;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .calc-column > .result {
+    margin-bottom: 0;
+  }
+
+  .page-grid--paired .result {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .page-grid--paired .result .tiles,
+  .page-grid--paired .result .range-badge,
+  .page-grid--paired .result .prem-pct {
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-grid--paired .result .tiles {
+    margin-bottom: 0;
+  }
+
+  .page-grid--paired .result .range-badge,
+  .page-grid--paired .result .prem-pct {
+    margin-bottom: 10px;
+  }
+
+  .page-grid--paired .result .meta:last-of-type {
+    margin-top: auto;
+  }
+}
 @media (max-width: 960px) {
   .page-grid { grid-template-columns: 1fr; }
 }
@@ -156,7 +211,6 @@ body {
 @media (min-width: 961px) {
   .years-card,
   .premium-card {
-    min-height: 410px;
     display: flex;
     flex-direction: column;
   }
