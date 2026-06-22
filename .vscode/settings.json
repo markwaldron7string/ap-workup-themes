@@ -1,0 +1,7 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "html.suggest.angular1": false,
+  "html.validate.scripts": false,
+  "html.validate.styles": false
+}
