@@ -106,6 +106,7 @@ body {
   .calc-column {
     display: grid;
     grid-template-rows: auto 1fr auto;
+    -webkit-grid-template-rows: subgrid;
     grid-template-rows: subgrid;
     grid-row: span 3;
     min-width: 0;
