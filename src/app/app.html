@@ -46,7 +46,7 @@
           </optgroup>
         </select>
         @if (selectedRule) {
-          <div class="state-info show">
+          <div class="state-info">
             <strong>{{ stateName(selectedState) }}:</strong>
             Permit age <strong>{{ selectedRule.pL }}</strong>
             &nbsp;·&nbsp; License age <strong>{{ selectedRule.lL }}</strong>
@@ -141,7 +141,6 @@
               id="ageInput"
               placeholder="e.g.  16  or  16.5"
               autocomplete="off"
-              style="margin-top: 7px"
               [value]="ageInput"
               (keydown)="guardDecimalKey($event)"
               (input)="onAgeInput(ageField.value)"
@@ -213,14 +212,14 @@
           <input #oldPrem type="text" class="currency-input" id="premOldInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premOldInput" (keydown)="guardDecimalKey($event)" (input)="onPremiumInput('old', oldPrem.value)" (blur)="applyPremiumInput('old')" />
         </div>
       </div>
-      <div class="field" style="margin-bottom: 0">
+      <div class="field field--no-bottom">
         <label for="premNewInput">New Premium</label>
         <div class="currency-wrap">
           <input #newPrem type="text" class="currency-input" id="premNewInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premNewInput" (keydown)="guardDecimalKey($event)" (input)="onPremiumInput('new', newPrem.value)" (blur)="applyPremiumInput('new')" />
         </div>
       </div>
 
-      <div class="field" style="margin-top: 1.1rem; margin-bottom: 0">
+      <div class="field field--fee-entry">
         <label for="premFeeInput">Fixed Fees</label>
         <div class="fee-entry-row">
           <div class="currency-wrap">

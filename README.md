@@ -127,13 +127,3 @@ Workflow file:
 ```text
 .github/workflows/ci.yml
 ```
-
-## Original HTML Version
-
-The original static HTML version is kept separately as:
-
-```text
-ap-workup-tool
-```
-
-This Angular project is intended to preserve the same user-facing tool while making the codebase easier to test, maintain, and expand.

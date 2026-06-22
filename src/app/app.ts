@@ -143,13 +143,11 @@ const EXACT_STATES = ['MA', 'NC', 'CA'];
   selector: 'app-root',
   imports: [NgTemplateOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   theme: Theme = 'dark';
 
   stateData = STATE_DATA;
-  exactStates = EXACT_STATES;
   otherStates = Object.keys(STATE_NAMES)
     .sort((a, b) => STATE_NAMES[a].localeCompare(STATE_NAMES[b]))
     .map((code) => ({ code, name: STATE_NAMES[code] }));
