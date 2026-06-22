@@ -42,7 +42,7 @@ Supports:
 
 ## Tech Stack
 
-- Angular 21
+- Angular 22
 - TypeScript
 - pnpm
 - Vitest
