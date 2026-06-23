@@ -294,6 +294,22 @@ describe('App', () => {
     expect(component.premResult?.copyText).toBeUndefined();
   });
 
+  it('sanitizes pasted premium input to numeric characters only', () => {
+    const input = document.createElement('input');
+    input.id = 'premOldInput';
+    input.value = '10';
+    input.setSelectionRange(2, 2);
+
+    component.guardDecimalPaste({
+      preventDefault: vi.fn(),
+      clipboardData: { getData: () => '$1a2.3b4' },
+      target: input,
+    } as unknown as ClipboardEvent);
+
+    expect(input.value).toBe('1012.34');
+    expect(component.premOldInput).toBe('1012.34');
+  });
+
   it('clears premium values and result state', () => {
     component.premOldInput = '1,000.00';
     component.premNewInput = '1,125.00';

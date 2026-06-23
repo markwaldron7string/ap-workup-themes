@@ -191,13 +191,13 @@
       <div class="field">
         <label for="premOldInput">Old Premium</label>
         <div class="currency-wrap">
-          <input #oldPrem type="text" class="currency-input" id="premOldInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premOldInput" (keydown)="guardDecimalKey($event)" (input)="onPremiumInput('old', oldPrem.value)" (blur)="applyPremiumInput('old')" />
+          <input #oldPrem type="text" class="currency-input" id="premOldInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premOldInput" (keydown)="guardDecimalKey($event)" (paste)="guardDecimalPaste($event)" (input)="onPremiumInput('old', oldPrem.value)" (blur)="applyPremiumInput('old')" />
         </div>
       </div>
       <div class="field field--no-bottom">
         <label for="premNewInput">New Premium</label>
         <div class="currency-wrap">
-          <input #newPrem type="text" class="currency-input" id="premNewInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premNewInput" (keydown)="guardDecimalKey($event)" (input)="onPremiumInput('new', newPrem.value)" (blur)="applyPremiumInput('new')" />
+          <input #newPrem type="text" class="currency-input" id="premNewInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premNewInput" (keydown)="guardDecimalKey($event)" (paste)="guardDecimalPaste($event)" (input)="onPremiumInput('new', newPrem.value)" (blur)="applyPremiumInput('new')" />
         </div>
       </div>
 
@@ -205,7 +205,7 @@
         <label for="premFeeInput">Fixed Fees</label>
         <div class="fee-entry-row">
           <div class="currency-wrap">
-            <input #feeInput type="text" class="currency-input" id="premFeeInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premFeeInput" (keydown)="guardDecimalKey($event)" (input)="onFeeInput(feeInput.value)" (keydown.enter)="addFixedFee()" />
+            <input #feeInput type="text" class="currency-input" id="premFeeInput" placeholder="0.00" autocomplete="off" inputmode="decimal" [value]="premFeeInput" (keydown)="guardDecimalKey($event)" (paste)="guardDecimalPaste($event)" (input)="onFeeInput(feeInput.value)" (keydown.enter)="addFixedFee()" />
           </div>
           <button class="fee-add-btn" type="button" (click)="addFixedFee()">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">

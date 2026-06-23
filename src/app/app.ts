@@ -700,6 +700,32 @@ export class App {
     if (!/[\d.]/.test(event.key)) event.preventDefault();
   }
 
+  guardDecimalPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const pasted = this.sanitizeDecimalText(event.clipboardData?.getData('text') ?? '');
+    if (!pasted) return;
+
+    const input = event.target as HTMLInputElement;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? start;
+    const value = this.sanitizeDecimalText(input.value.slice(0, start) + pasted + input.value.slice(end));
+    const cursor = Math.min(start + pasted.length, value.length);
+
+    input.value = value;
+    input.setSelectionRange(cursor, cursor);
+
+    if (input.id === 'premOldInput') this.onPremiumInput('old', value);
+    else if (input.id === 'premNewInput') this.onPremiumInput('new', value);
+    else if (input.id === 'premFeeInput') this.onFeeInput(value);
+  }
+
+  private sanitizeDecimalText(value: string): string {
+    const cleaned = value.replace(/[^\d.]/g, '');
+    const [whole, ...fraction] = cleaned.split('.');
+    if (fraction.length === 0) return whole;
+    return `${whole}.${fraction.join('')}`;
+  }
+
   onFeeInput(value: string): void {
     this.premFeeInput = value;
   }
