@@ -520,7 +520,6 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   transform: translateY(0);
   box-shadow: 0 0 20px rgba(34,211,160,.2);
   background: var(--copy-flag-bg-hover);
-  transition-delay: 1s;
 }
 .result-copy-btn:not(.copied):hover .result-copy-flag::before,
 .result-copy-btn:not(.copied):focus-visible .result-copy-flag::before {
