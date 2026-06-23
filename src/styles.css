@@ -272,6 +272,12 @@ select, input.date-input, input.currency-input {
   outline: none;
   transition: border-color .15s, box-shadow .15s, background .2s;
 }
+input.date-input,
+input.currency-input {
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
 select:focus, input.date-input:focus, input.currency-input:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px var(--blue-glow);
@@ -490,7 +496,9 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   background: var(--copy-flag-bg);
   border: 1px solid var(--copy-flag-border);
   color: var(--copy-flag-text);
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   font-size: 12px;
   font-weight: 500;
   line-height: 1;
