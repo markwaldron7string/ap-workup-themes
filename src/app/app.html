@@ -158,10 +158,10 @@
   <div class="calc-column">
     <header class="header">
       <div class="logo-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
-          <line x1="19" y1="5" x2="5" y2="19" />
-          <circle cx="6.5" cy="6.5" r="2.5" />
-          <circle cx="17.5" cy="17.5" r="2.5" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <circle cx="7" cy="7" r="2" />
+          <circle cx="17" cy="17" r="2" />
         </svg>
       </div>
       <div class="header-text">
@@ -305,9 +305,9 @@
           type="button"
           [class.copied]="copiedText() === copyText"
           [attr.aria-label]="copiedText() === copyText ? 'Copied result' : 'Copy result'"
-          title="Copy result"
           (click)="copyResult(copyText, $event)"
         >
+          <span class="result-copy-flag" aria-hidden="true">Copy result</span>
           <span class="result-copy-icon" aria-hidden="true">
             <span class="copy-icon" aria-hidden="true"></span>
             <svg class="check-icon" viewBox="0 0 24 24" fill="none">
