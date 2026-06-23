@@ -149,7 +149,7 @@ export class App {
 
   stateData = STATE_DATA;
   otherStates = Object.keys(STATE_NAMES)
-    .sort((a, b) => STATE_NAMES[a].localeCompare(STATE_NAMES[b]))
+    .sort((a, b) => a.localeCompare(b))
     .map((code) => ({ code, name: STATE_NAMES[code] }));
 
   selectedState = '';
