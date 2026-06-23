@@ -24,8 +24,6 @@
   --success: #22d3a0;
   --success-bg: rgba(34,211,160,0.07);
   --success-bd: rgba(34,211,160,0.25);
-  --copy-icon-grad-start: #9af5dc;
-  --copy-icon-grad-end: #15996f;
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -55,8 +53,6 @@
   --success: #0f9e76;
   --success-bg: rgba(15,158,118,0.08);
   --success-bd: rgba(15,158,118,0.28);
-  --copy-icon-grad-start: #6ee7bc;
-  --copy-icon-grad-end: #0a7d5c;
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
   --warn-bd: rgba(184,125,0,0.28);
@@ -174,6 +170,17 @@ body {
   flex-shrink: 0;
 }
 .logo-box svg { width: 24px; height: 24px; }
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+.logo-icon--license {
+  -webkit-mask-image: url('/license-icon.png');
+  mask-image: url('/license-icon.png');
+}
 .header-text { flex: 1; }
 .header-text h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
 .header-text p { font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 2px; }
@@ -363,7 +370,6 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .btn:hover:not(.btn-off) { background: var(--blue-hover); box-shadow: 0 4px 18px var(--blue-glow); }
 .btn:active:not(.btn-off) { transform: scale(.99); }
 .btn.btn-off { opacity: .35; cursor: not-allowed; }
-.btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 .btn-clear {
   background: transparent;
   color: var(--clear-color);
@@ -376,10 +382,10 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   transition: background .15s, color .15s, border-color .15s;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
   white-space: nowrap;
 }
-.btn-clear svg { width: 14px; height: 14px; flex-shrink: 0; }
 .btn-clear:hover { background: var(--clear-hover-bg); color: var(--clear-hover); border-color: var(--clear-hover-bd); }
 .btn-clear:active { transform: scale(.99); }
 
@@ -465,7 +471,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   inset: 0;
   width: 20px;
   height: 20px;
-  background: linear-gradient(to top right, var(--copy-icon-grad-start), var(--copy-icon-grad-end));
+  background: var(--success);
   -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
   mask: url('/copy-icon.png') center / contain no-repeat;
   pointer-events: none;
