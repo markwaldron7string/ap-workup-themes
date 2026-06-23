@@ -527,6 +527,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   visibility: visible;
   transform: translateX(-50%) translateY(0);
   border-color: var(--copy-flag-border-hover);
+  transition-delay: .5s;
 }
 .result-copy-btn:not(.copied):hover .result-copy-flag::after,
 .result-copy-btn:not(.copied):focus-visible .result-copy-flag::after {
