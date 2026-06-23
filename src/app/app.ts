@@ -761,8 +761,8 @@ export class App {
     const sign = pct > 0 ? '+' : '';
     const meta = `$${this.fmtCurrency(this.parsedOldPrem)} → $${this.fmtCurrency(this.parsedNewPrem)}`;
     const extraMeta = totalFees > 0 ? `Fixed fees excluded: $${this.fmtCurrency(totalFees)}` : undefined;
-    const copyText = this.formatPremiumClipboardText(this.parsedOldPrem, this.parsedNewPrem, pct);
     if (pct > 0) {
+      const copyText = this.formatPremiumClipboardText(this.parsedOldPrem, this.parsedNewPrem, pct);
       this.premResult = {
         tone: 'success',
         icon: 'up',
@@ -778,7 +778,6 @@ export class App {
         tone: 'danger',
         icon: 'down',
         title: 'Premium decrease',
-        copyText,
         premiumPct: `${pct.toFixed(1)}%`,
         premiumClass: 'decrease',
         meta,
@@ -786,10 +785,9 @@ export class App {
       };
     } else {
       this.premResult = {
-        tone: 'success',
+        tone: 'warn',
         icon: 'flat',
         title: 'No change',
-        copyText,
         premiumPct: '0.0%',
         premiumClass: 'flat',
         meta,

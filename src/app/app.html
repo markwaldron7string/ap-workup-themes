@@ -296,7 +296,7 @@
           <svg viewBox="0 0 20 20" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 10 6 13 10 9 17 16" /><polyline points="13 16 17 16 17 12" /></svg>
         }
         @case ('flat') {
-          <svg viewBox="0 0 20 20" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round"><line x1="3" y1="10" x2="17" y2="10" /></svg>
+          <svg viewBox="0 0 20 20" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round"><line x1="3" y1="10" x2="17" y2="10" /></svg>
         }
       }
       <span class="result-title">{{ result.title }}</span>
@@ -305,10 +305,10 @@
           class="result-copy-btn"
           type="button"
           [class.copied]="copiedText() === copyText"
-          [attr.aria-label]="copiedText() === copyText ? 'Copied result' : 'Copy result'"
+          [attr.aria-label]="copiedText() === copyText ? 'Copied' : 'Copy'"
           (click)="copyResult(copyText, $event)"
         >
-          <span class="result-copy-flag" aria-hidden="true">Copy result</span>
+          <span class="result-copy-flag" aria-hidden="true">Copy</span>
           <span class="result-copy-icon" aria-hidden="true">
             <span class="copy-icon" aria-hidden="true"></span>
             <svg class="check-icon" viewBox="0 0 24 24" fill="none">

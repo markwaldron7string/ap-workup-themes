@@ -24,8 +24,10 @@
   --success: #22d3a0;
   --success-bg: rgba(34,211,160,0.07);
   --success-bd: rgba(34,211,160,0.25);
-  --copy-flag-bg: #173328;
-  --copy-flag-bg-hover: #1e3f34;
+  --copy-flag-bg: #122820;
+  --copy-flag-border: rgba(34,211,160,.45);
+  --copy-flag-text: var(--success);
+  --copy-flag-border-hover: rgba(34,211,160,.65);
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -56,7 +58,9 @@
   --success-bg: rgba(15,158,118,0.08);
   --success-bd: rgba(15,158,118,0.28);
   --copy-flag-bg: #ecf9f4;
-  --copy-flag-bg-hover: #dff5ed;
+  --copy-flag-border: rgba(15,158,118,.45);
+  --copy-flag-text: var(--success);
+  --copy-flag-border-hover: rgba(15,158,118,.65);
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
   --warn-bd: rgba(184,125,0,0.28);
@@ -471,32 +475,31 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-btn:not(.copied):focus-visible::before {
   content: '';
   position: absolute;
-  right: 0;
+  left: 50%;
   bottom: calc(100% - 2px);
-  width: 96px;
+  width: 72px;
   height: 44px;
+  transform: translateX(-50%);
 }
 .result-copy-flag {
   position: absolute;
   bottom: calc(100% + 8px);
-  right: 0;
-  padding: 5px 10px;
-  border-radius: 8px;
+  left: 50%;
+  padding: 6px 12px;
+  border-radius: 6px;
   background: var(--copy-flag-bg);
-  border: 1px solid var(--success-bd);
-  color: var(--success);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  border: 1px solid var(--copy-flag-border);
+  color: var(--copy-flag-text);
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 500;
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 0 16px rgba(34,211,160,.12);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(4px);
+  transform: translateX(-50%) translateY(4px);
   cursor: pointer;
-  transition: opacity .2s ease, transform .2s ease, visibility .2s ease, background .15s, box-shadow .2s ease;
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease, border-color .15s;
   transition-delay: 0s;
   z-index: 2;
 }
@@ -504,15 +507,17 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   content: '';
   position: absolute;
   top: 100%;
-  right: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: var(--success-bd);
+  border-top-color: var(--copy-flag-border);
 }
 .result-copy-flag::before {
   content: '';
   position: absolute;
   top: 100%;
-  right: 13px;
+  left: 50%;
+  transform: translateX(-50%);
   border: 4px solid transparent;
   border-top-color: var(--copy-flag-bg);
 }
@@ -520,24 +525,16 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-btn:not(.copied):focus-visible .result-copy-flag {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  box-shadow: 0 0 20px rgba(34,211,160,.2);
-  background: var(--copy-flag-bg-hover);
+  transform: translateX(-50%) translateY(0);
+  border-color: var(--copy-flag-border-hover);
 }
-.result-copy-btn:not(.copied):hover .result-copy-flag::before,
-.result-copy-btn:not(.copied):focus-visible .result-copy-flag::before {
-  border-top-color: var(--copy-flag-bg-hover);
+.result-copy-btn:not(.copied):hover .result-copy-flag::after,
+.result-copy-btn:not(.copied):focus-visible .result-copy-flag::after {
+  border-top-color: var(--copy-flag-border-hover);
 }
 [data-theme="light"] .result-copy-btn { border-color: rgba(15,158,118,.3); }
 [data-theme="light"] .result-copy-btn:hover,
 [data-theme="light"] .result-copy-btn.copied { border-color: rgba(15,158,118,.5); }
-[data-theme="light"] .result-copy-flag {
-  box-shadow: 0 0 16px rgba(15,158,118,.1);
-}
-[data-theme="light"] .result-copy-btn:not(.copied):hover .result-copy-flag,
-[data-theme="light"] .result-copy-btn:not(.copied):focus-visible .result-copy-flag {
-  box-shadow: 0 0 20px rgba(15,158,118,.16);
-}
 .result-copy-icon {
   position: relative;
   width: 20px;
@@ -605,7 +602,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 }
 .prem-pct.increase { color: var(--success); }
 .prem-pct.decrease { color: var(--danger); }
-.prem-pct.flat { color: var(--text); }
+.prem-pct.flat { color: var(--warn); }
 
 #calPopup {
   position: fixed;

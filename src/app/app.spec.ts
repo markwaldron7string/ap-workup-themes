@@ -282,6 +282,18 @@ describe('App', () => {
     expect(component.premResult?.copyText).toBe('Old premium: $100\nNew premium: $200\n% Difference: 100.0%');
   });
 
+  it('omits copy text for premium decrease and no change', () => {
+    component.parsedOldPrem = 100;
+    component.parsedNewPrem = 80;
+    component.calculatePremium();
+    expect(component.premResult?.copyText).toBeUndefined();
+
+    component.parsedNewPrem = 100;
+    component.calculatePremium();
+    expect(component.premResult?.tone).toBe('warn');
+    expect(component.premResult?.copyText).toBeUndefined();
+  });
+
   it('clears premium values and result state', () => {
     component.premOldInput = '1,000.00';
     component.premNewInput = '1,125.00';
