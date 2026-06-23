@@ -416,8 +416,8 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-body strong { font-weight: 500; }
 .result-copy-btn {
   margin-left: auto;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border: 1px solid rgba(34,211,160,.25);
   border-radius: 8px;
   background: transparent;
@@ -448,23 +448,23 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-btn:active { transform: scale(.96); }
 .result-copy-icon {
   position: relative;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
 }
 .result-copy-icon svg {
   position: absolute;
   inset: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
   transition: opacity .25s ease;
 }
 .result-copy-icon .copy-icon {
   position: absolute;
   inset: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   background: linear-gradient(to top right, var(--copy-icon-grad-start), var(--copy-icon-grad-end));
   -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
   mask: url('/copy-icon.png') center / contain no-repeat;
