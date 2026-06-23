@@ -121,14 +121,42 @@ body {
     margin-bottom: 0;
   }
 
-  .calc-column > .card {
+  .calc-column > .card,
+  .premium-stack > .card {
     margin-bottom: 0;
     min-height: 0;
     height: 100%;
   }
 
-  .calc-column > .result {
+  .calc-column > .result,
+  .premium-stack > .result {
     margin-bottom: 0;
+  }
+
+  .premium-stack {
+    display: contents;
+  }
+
+  .page-grid--years-age-expanded .premium-stack {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    gap: 1rem;
+  }
+
+  .page-grid--years-age-expanded .premium-stack > .premium-card {
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .page-grid--years-age-expanded .premium-stack > .result {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .page-grid--years-age-expanded.page-grid--paired .premium-stack > .result {
+    height: auto;
   }
 
   .page-grid--paired .result {

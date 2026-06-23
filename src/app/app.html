@@ -22,7 +22,7 @@
   </svg>
 </button>
 
-<div class="page-grid" [class.page-grid--paired]="yearsResult && premResult">
+<div class="page-grid" [class.page-grid--paired]="yearsResult && premResult" [class.page-grid--years-age-expanded]="expAgeEnabled">
   <div class="calc-column">
     <header class="header">
       <div class="logo-box">
@@ -187,6 +187,7 @@
       </div>
     </header>
 
+    <div class="premium-stack">
     <div class="card premium-card">
       <div class="field">
         <label for="premOldInput">Old Premium</label>
@@ -242,6 +243,7 @@
     @if (premResult) {
       <ng-container [ngTemplateOutlet]="resultTpl" [ngTemplateOutletContext]="{ result: premResult }"></ng-container>
     }
+    </div>
   </div>
 </div>
 
