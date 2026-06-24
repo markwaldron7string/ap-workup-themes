@@ -585,6 +585,17 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   pointer-events: none;
   transition: opacity .25s ease;
 }
+.result-copy-icon .copy-icon {
+  position: absolute;
+  inset: 0;
+  width: 18px;
+  height: 18px;
+  background: var(--success);
+  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
+  mask: url('/copy-icon.png') center / contain no-repeat;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
 .result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
 .result:hover .result-copy-btn:not(.copied) .copy-icon { opacity: 1; }
