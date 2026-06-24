@@ -581,17 +581,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   inset: 0;
   width: 18px;
   height: 18px;
-  pointer-events: none;
-  transition: opacity .25s ease;
-}
-.result-copy-icon .copy-icon {
-  position: absolute;
-  inset: 0;
-  width: 18px;
-  height: 18px;
-  background: var(--success);
-  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
-  mask: url('/copy-icon.png') center / contain no-repeat;
+  color: var(--success);
   pointer-events: none;
   transition: opacity .25s ease;
 }
