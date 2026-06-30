@@ -603,6 +603,22 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   pointer-events: none;
   transition: opacity .25s ease, background .15s;
 }
+[data-theme="light"] .result-copy-icon .copy-icon {
+  background: #053528;
+  isolation: isolate;
+  -webkit-mask: url('/copy-icon.png') center / 91% no-repeat;
+  mask: url('/copy-icon.png') center / 91% no-repeat;
+}
+[data-theme="light"] .result-copy-icon .copy-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.96);
+  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
+  mask: url('/copy-icon.png') center / contain no-repeat;
+  z-index: -1;
+  pointer-events: none;
+}
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
 .result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
 .result:hover .result-copy-btn:not(.copied) .copy-icon { opacity: 1; }
