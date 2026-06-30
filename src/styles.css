@@ -28,6 +28,11 @@
   --copy-flag-border: rgba(34,211,160,.45);
   --copy-flag-text: var(--success);
   --copy-flag-border-hover: rgba(34,211,160,.65);
+  --copy-btn-bg: transparent;
+  --copy-btn-border: rgba(34,211,160,.25);
+  --copy-btn-icon: var(--success);
+  --copy-btn-hover-bg: var(--range-bg);
+  --copy-btn-hover-border: rgba(34,211,160,.45);
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -62,6 +67,11 @@
   --copy-flag-border: rgba(15,158,118,.45);
   --copy-flag-text: var(--success);
   --copy-flag-border-hover: rgba(15,158,118,.65);
+  --copy-btn-bg: rgba(15, 158, 118, 0.749);
+  --copy-btn-border: rgba(15,158,118,.45);
+  --copy-btn-icon: #ffffff;
+  --copy-btn-hover-bg: #0a7d5c;
+  --copy-btn-hover-border: #087252;
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
   --warn-bd: rgba(184,125,0,0.28);
@@ -476,10 +486,10 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   margin-left: auto;
   width: 32px;
   height: 32px;
-  border: 1px solid rgba(34,211,160,.25);
+  border: 1px solid var(--copy-btn-border);
   border-radius: 8px;
-  background: transparent;
-  color: var(--success);
+  background: var(--copy-btn-bg);
+  color: var(--copy-btn-icon);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -501,8 +511,8 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 }
 .result-copy-btn:hover,
 .result-copy-btn.copied {
-  background: var(--range-bg);
-  border-color: rgba(34,211,160,.45);
+  background: var(--copy-btn-hover-bg);
+  border-color: var(--copy-btn-hover-border);
 }
 .result-copy-btn:active { transform: scale(.96); }
 .result-copy-btn:not(.copied):hover::before,
@@ -567,9 +577,6 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-btn:not(.copied):focus-visible .result-copy-flag::after {
   border-top-color: var(--copy-flag-border-hover);
 }
-[data-theme="light"] .result-copy-btn { border-color: rgba(15,158,118,.3); }
-[data-theme="light"] .result-copy-btn:hover,
-[data-theme="light"] .result-copy-btn.copied { border-color: rgba(15,158,118,.5); }
 .result-copy-icon {
   position: relative;
   width: 18px;
@@ -581,20 +588,20 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   inset: 0;
   width: 18px;
   height: 18px;
-  color: var(--success);
+  color: var(--copy-btn-icon);
   pointer-events: none;
-  transition: opacity .25s ease;
+  transition: opacity .25s ease, color .15s;
 }
 .result-copy-icon .copy-icon {
   position: absolute;
   inset: 0;
   width: 18px;
   height: 18px;
-  background: var(--success);
+  background: var(--copy-btn-icon);
   -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
   mask: url('/copy-icon.png') center / contain no-repeat;
   pointer-events: none;
-  transition: opacity .25s ease;
+  transition: opacity .25s ease, background .15s;
 }
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
 .result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
