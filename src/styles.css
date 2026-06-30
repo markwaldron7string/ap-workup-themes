@@ -33,6 +33,7 @@
   --copy-btn-icon: var(--success);
   --copy-btn-hover-bg: var(--range-bg);
   --copy-btn-hover-border: rgba(34,211,160,.45);
+  --copy-btn-icon-mask: url('/copy-icon.png');
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -67,11 +68,12 @@
   --copy-flag-border: rgba(15,158,118,.45);
   --copy-flag-text: var(--success);
   --copy-flag-border-hover: rgba(15,158,118,.65);
-  --copy-btn-bg: rgba(12, 159, 88, 0.294);
-  --copy-btn-border: rgba(22, 134, 42, 0.298);
-  --copy-btn-icon: #ffffff;
-  --copy-btn-hover-bg: #0a7d5c;
-  --copy-btn-hover-border: #087252;
+  --copy-btn-bg: rgba(15, 158, 118, 0.042);
+  --copy-btn-border: rgba(23, 165, 75, 0.703);
+  --copy-btn-icon: var(--copy-btn-border);
+  --copy-btn-hover-bg: rgba(15, 158, 118, 0.145);
+  --copy-btn-hover-border: rgba(15, 158, 118, 0.586);
+  --copy-btn-icon-mask: url('/copy-icon-light.png');
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
   --warn-bd: rgba(184,125,0,0.28);
@@ -514,6 +516,10 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   background: var(--copy-btn-hover-bg);
   border-color: var(--copy-btn-hover-border);
 }
+[data-theme="light"] .result-copy-btn:hover,
+[data-theme="light"] .result-copy-btn.copied {
+  --copy-btn-icon: var(--copy-btn-hover-border);
+}
 .result-copy-btn:active { transform: scale(.96); }
 .result-copy-btn:not(.copied):hover::before,
 .result-copy-btn:not(.copied):focus-visible::before {
@@ -598,26 +604,10 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   width: 18px;
   height: 18px;
   background: var(--copy-btn-icon);
-  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
-  mask: url('/copy-icon.png') center / contain no-repeat;
+  -webkit-mask: var(--copy-btn-icon-mask) center / contain no-repeat;
+  mask: var(--copy-btn-icon-mask) center / contain no-repeat;
   pointer-events: none;
   transition: opacity .25s ease, background .15s;
-}
-[data-theme="light"] .result-copy-icon .copy-icon {
-  background: #053528;
-  isolation: isolate;
-  -webkit-mask: url('/copy-icon.png') center / 91% no-repeat;
-  mask: url('/copy-icon.png') center / 91% no-repeat;
-}
-[data-theme="light"] .result-copy-icon .copy-icon::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,.96);
-  -webkit-mask: url('/copy-icon.png') center / contain no-repeat;
-  mask: url('/copy-icon.png') center / contain no-repeat;
-  z-index: -1;
-  pointer-events: none;
 }
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
 .result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
