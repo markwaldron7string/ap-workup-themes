@@ -68,7 +68,7 @@
   --copy-flag-border: rgba(15,158,118,.45);
   --copy-flag-text: var(--success);
   --copy-flag-border-hover: rgba(15,158,118,.65);
-  --copy-btn-bg: rgba(15, 158, 118, 0.069);
+  --copy-btn-bg: rgba(24, 210, 158, 0.069);
   --copy-btn-border: rgba(15,158,118,.38);
   --copy-btn-icon: rgba(38, 150, 124, 0.698);
   --copy-btn-hover-bg: rgba(27, 161, 123, 0.112);
