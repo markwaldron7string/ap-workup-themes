@@ -34,6 +34,8 @@
   --copy-btn-hover-bg: var(--range-bg);
   --copy-btn-hover-border: rgba(34,211,160,.45);
   --copy-btn-icon-mask: url('/copy-icon.png');
+  --copy-btn-icon-gradient: linear-gradient(160deg, #6ee7d7 0%, #22d3a0 48%, #0f9e76 100%);
+  --copy-btn-icon-gradient-hover: linear-gradient(160deg, #99f6e4 0%, #34d399 48%, #14b8a6 100%);
   --warn: #f0aa30;
   --warn-bg: rgba(240,170,48,0.07);
   --warn-bd: rgba(240,170,48,0.25);
@@ -70,9 +72,9 @@
   --copy-flag-border-hover: rgba(15,158,118,.65);
   --copy-btn-bg: rgba(15, 158, 118, 0.069);
   --copy-btn-border: rgba(15,158,118,.38);
-  --copy-btn-icon: rgba(68, 85, 81, 0.698);
-  --copy-btn-hover-bg: rgba(29, 138, 107, 0.112);
-  --copy-btn-hover-border: rgba(24, 121, 98, 0.402);
+  --copy-btn-icon: rgba(38, 150, 124, 0.698);
+  --copy-btn-hover-bg: rgba(27, 161, 123, 0.112);
+  --copy-btn-hover-border: rgba(26, 153, 123, 0.549);
   --copy-btn-icon-mask: url('/copy-icon-light.png');
   --warn: #b87d00;
   --warn-bg: rgba(184,125,0,0.08);
@@ -620,6 +622,13 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
   mask: var(--copy-btn-icon-mask) center / contain no-repeat;
   pointer-events: none;
   transition: opacity .25s ease, background .15s;
+}
+[data-theme="dark"] .result-copy-icon .copy-icon {
+  background: var(--copy-btn-icon-gradient);
+}
+[data-theme="dark"] .result-copy-btn:hover .copy-icon,
+[data-theme="dark"] .result-copy-btn.copied .copy-icon {
+  background: var(--copy-btn-icon-gradient-hover);
 }
 .result-copy-btn:not(.copied) .check-icon { opacity: 0; }
 .result-copy-btn:not(.copied) .copy-icon { opacity: 0; }
