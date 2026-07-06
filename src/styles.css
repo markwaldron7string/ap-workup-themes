@@ -21,7 +21,7 @@
   --clear-hover-bd: #444;
   --tile-bg: rgba(255,255,255,0.04);
   --range-bg: rgba(255,255,255,0.09);
-  --success: #12dfb6cf;
+  --success: #16d4aecf;
   --success-bg: rgba(16, 214, 188, 0.091);
   --success-bd: rgba(22, 157, 130, 0.129);
   --copy-flag-bg: #122428;
@@ -61,8 +61,8 @@
   --clear-hover-bd: #bbbbcc;
   --tile-bg: rgba(0,0,0,0.03);
   --range-bg: rgba(0,0,0,0.04);
-  --success: #108b77dc;
-  --success-bg: rgba(15, 158, 153, 0.08);
+  --success: #108b68dc;
+  --success-bg: rgba(15, 158, 125, 0.08);
   --success-bd: rgba(15, 158, 141, 0.059);
   --copy-flag-bg: #ecf9f4;
   --copy-flag-border: rgba(15,158,118,.45);
