@@ -596,15 +596,15 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 }
 .result-copy-icon {
   position: relative;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   pointer-events: none;
 }
 .result-copy-icon svg {
   position: absolute;
   inset: 0;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: var(--copy-btn-icon);
   pointer-events: none;
   transition: opacity .25s ease, color .15s;
@@ -612,8 +612,8 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-icon .copy-icon {
   position: absolute;
   inset: 0;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   background: var(--copy-btn-icon);
   -webkit-mask: var(--copy-btn-icon-mask) center / contain no-repeat;
   mask: var(--copy-btn-icon-mask) center / contain no-repeat;
