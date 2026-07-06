@@ -30,7 +30,7 @@
   --copy-flag-border-hover: rgba(34,211,160,.65);
   --copy-btn-bg: transparent;
   --copy-btn-border: rgba(34,211,160,.25);
-  --copy-btn-icon: var(--success);
+  --copy-btn-icon: rgb(9, 240, 174);
   --copy-btn-hover-bg: var(--range-bg);
   --copy-btn-hover-border: rgba(34,211,160,.45);
   --copy-btn-icon-mask: url('/copy-icon-light.png');
