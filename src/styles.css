@@ -629,6 +629,16 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 .result-copy-btn.copied .copy-icon { opacity: 0; }
 .result-copy-btn.copied .check-icon { opacity: 1; }
 
+@media (max-width: 960px) {
+  .result-copy-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .result-copy-btn:not(.copied) .copy-icon {
+    opacity: 1;
+  }
+}
+
 .tiles { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 .tile {
   background: var(--tile-bg);
