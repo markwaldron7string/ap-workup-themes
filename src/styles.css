@@ -344,6 +344,9 @@ select {
 input.date-input::placeholder, input.currency-input::placeholder { color: var(--placeholder); }
 
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 960px) {
+  .row { grid-template-columns: 1fr; }
+}
 .date-wrap { position: relative; }
 .date-wrap .date-input { padding-right: 42px; }
 .cal-icon-btn {
