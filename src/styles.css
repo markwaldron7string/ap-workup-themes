@@ -52,7 +52,7 @@
   --text: #111111;
   --muted: #444450;
   --label: #666672;
-  --meta: #49585bc7;
+  --meta: #61797dc7;
   --placeholder: #b0b0b8;
   --result-body: #444450;
   --clear-color: #555560;
@@ -652,7 +652,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 }
 [data-theme="light"] .range-badge { border-color: rgba(15,158,118,.3); }
 
-.meta { font-size: 12px; color: var(--meta); margin-top: 8px; }
+.meta { font-size: 12px; font-weight: 700; color: var(--meta); margin-top: 8px; }
 .prem-pct {
   font-size: 52px;
   font-weight: 700;
