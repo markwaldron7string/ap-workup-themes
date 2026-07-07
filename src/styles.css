@@ -652,7 +652,7 @@ input.date-input::placeholder, input.currency-input::placeholder { color: var(--
 }
 [data-theme="light"] .range-badge { border-color: rgba(15,158,118,.3); }
 
-.meta { font-size: 12px; font-weight: 700; color: var(--meta); margin-top: 8px; }
+.meta { font-size: 12px; font-weight: 500; color: var(--meta); margin-top: 8px; }
 .prem-pct {
   font-size: 52px;
   font-weight: 700;
