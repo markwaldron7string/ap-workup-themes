@@ -1,7 +1,7 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
-type Theme = 'dark' | 'light';
+type Theme = 'dark' | 'light' | 'original';
 type Tone = 'success' | 'warn' | 'danger';
 type CalendarTarget = 'primary' | 'workup';
 
@@ -194,10 +194,6 @@ export class App {
     this.theme = theme;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('calcTheme', theme);
-  }
-
-  toggleTheme(): void {
-    this.setTheme(this.theme === 'dark' ? 'light' : 'dark');
   }
 
   stateName(code: string): string {

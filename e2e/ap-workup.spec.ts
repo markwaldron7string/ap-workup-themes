@@ -132,14 +132,18 @@ test.describe('Premium Workup Calculator', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Theme toggle', () => {
-  test('Test 10: Clicking theme toggle switches between dark and light', async ({ page }) => {
+  test('Test 10: Theme buttons switch between light, dark, and original', async ({ page }) => {
     await page.goto('/');
     const html = page.locator('html');
-    const before = await html.getAttribute('data-theme');
-    await page.click('.theme-toggle');
-    const after = await html.getAttribute('data-theme');
-    expect(after).not.toBe(before);
-    expect(['dark', 'light']).toContain(after);
+
+    await page.click('.theme-btn[aria-label="Light mode"]');
+    expect(await html.getAttribute('data-theme')).toBe('light');
+
+    await page.click('.theme-btn[aria-label="Dark mode"]');
+    expect(await html.getAttribute('data-theme')).toBe('dark');
+
+    await page.click('.theme-btn[aria-label="Original spreadsheet theme"]');
+    expect(await html.getAttribute('data-theme')).toBe('original');
   });
 });
 
