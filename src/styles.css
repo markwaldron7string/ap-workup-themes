@@ -156,6 +156,12 @@ body {
   margin: 0 auto;
   padding: 2.5rem 4.5rem 0 1.5rem;
 }
+[data-theme="original"] .page-note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 4.5rem 1.5rem 1.5rem;
+}
 .page-grid {
   max-width: 1240px;
   margin: 0 auto;
@@ -291,6 +297,12 @@ body {
 .header-text { flex: 1; }
 .header-text h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
 .header-text p { font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+[data-theme="original"] .header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+}
 
 .theme-toggle {
   position: absolute;
@@ -326,9 +338,9 @@ body {
 .theme-btn:hover { background: var(--surface-2); color: var(--text); }
 .theme-btn.active { background: var(--surface-2); color: var(--blue); }
 .theme-btn svg { width: 16px; height: 16px; }
-.theme-btn--moon { color: #625525; }
+.theme-btn--moon { color: black }
 .theme-btn--moon:hover,
-.theme-btn--moon.active { color: #c3a63c; }
+.theme-btn--moon.active { color: var(--text) }
 
 .important-note { font-size: 15px; font-weight: 600; color: var(--muted); }
 .mvr-note { font-size: 13px; font-weight: 600; color: var(--muted); }
