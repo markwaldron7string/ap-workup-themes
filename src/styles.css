@@ -243,6 +243,10 @@ body {
     align-items: center;
   }
 
+  .page-grid--paired .result .range-badge {
+    align-self: flex-start;
+  }
+
   .page-grid--paired .result .tiles {
     margin-bottom: 0;
   }
