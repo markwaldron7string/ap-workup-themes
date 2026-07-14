@@ -252,6 +252,34 @@ describe('App', () => {
     expect(component.premResult?.premiumClass).toBe('increase');
   });
 
+  it('includes a fee left in the input field even if "Add fee" was never clicked', () => {
+    component.origOldPrem = 100;
+    component.origNewPrem = 200;
+    component.syncAdjustedPremiums();
+    component.onFeeInput('5');
+
+    component.calculatePremium();
+
+    expect(component.fixedFees).toEqual([5]);
+    expect(component.premResult?.premiumPct).toBe('+105.3%');
+  });
+
+  it('includes both an already-added fee and a still-pending typed fee on calculate', () => {
+    component.origOldPrem = 100;
+    component.origNewPrem = 200;
+    component.syncAdjustedPremiums();
+    component.onFeeInput('5');
+    component.addFixedFee();
+    component.onFeeInput('1');
+
+    component.calculatePremium();
+
+    expect(component.fixedFees).toEqual([5, 1]);
+    expect(component.parsedOldPrem).toBe(94);
+    expect(component.parsedNewPrem).toBe(194);
+    expect(component.premResult?.premiumPct).toBe('+106.4%');
+  });
+
   it('shows copied feedback immediately without waiting for clipboard', () => {
     vi.useFakeTimers();
     const writeText = vi.fn().mockImplementation(
