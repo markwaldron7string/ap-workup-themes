@@ -1,7 +1,7 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
-type Theme = 'dark' | 'light' | 'original';
+type Theme = 'dark' | 'light' | 'dusk';
 type Tone = 'success' | 'warn' | 'danger';
 type CalendarTarget = 'primary' | 'workup';
 
