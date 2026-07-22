@@ -1,15 +1,13 @@
-[![CI](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/markwaldron7string/ap-workup-angular/actions/workflows/ci.yml)
-[![Angular](https://img.shields.io/badge/Angular-22-dd0031?logo=angular&logoColor=white)](https://angular.dev)
+[![Angular](https://img.shields.io/badge/Angular-21-dd0031?logo=angular&logoColor=white)](https://angular.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://typescriptlang.org)
 [![Playwright](https://img.shields.io/badge/Playwright-E2E-45ba4b?logo=playwright&logoColor=white)](https://playwright.dev)
-[![Vercel](https://img.shields.io/badge/Deployed-Vercel-000000?logo=vercel&logoColor=white)](https://ap-workup-angular.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # AP Workup Tool
 
 Insurance workup calculators for quickly checking driver experience and premium changes during underwriting or remarketing reviews.
 
-**Live demo:** [ap-workup-angular.vercel.app](https://ap-workup-angular.vercel.app/)
+This is a themed fork of [ap-workup-angular](https://github.com/markwaldron7string/ap-workup-angular) used to experiment with background photos, glass-card styling, and additional themes without touching the original project.
 
 ![AP Workup Tool screenshot](public/workuptool.png)
 
@@ -38,15 +36,27 @@ Supports:
 - Fixed fee exclusions
 - Clear/reset behavior
 - One-click copy button on each result card - copies the result to the clipboard in a clean plain-text format
-- Light, dark, and original (retro spreadsheet-styled) theme toggle that persists: user's preference remains after user closes the app and returns.
+
+## Themes
+
+A toggle in the top-right corner switches between three full-bleed photo backgrounds. Cards throughout the app use a translucent, blurred "glass" surface so the background shows through, and the choice persists in `localStorage` across visits.
+
+| Theme | Icon | Background | Look |
+| --- | --- | --- | --- |
+| Light | Palm tree | `LightBlue.jpg` | Bright, airy, high-contrast text |
+| Dark | Umbrella in the rain | `JapaneseNeon.jpg` | Moody neon night scene |
+| Dusk | Ocean horizon | `StoneBeach.jpg` | Warm sunset over a rocky shoreline |
+
+Result cards (success / warn / danger) are tuned per theme so the increase, decrease, and no-change states stay legible against each background image.
 
 ## Tech Stack
 
-- Angular 22
+- Angular 21
 - TypeScript
 - pnpm
 - Vitest
 - jsdom
+- Playwright
 - GitHub Actions
 
 ## Getting Started
@@ -95,35 +105,54 @@ Run unit tests once for CI:
 pnpm test:ci
 ```
 
+Run end-to-end tests (requires the dev server running at `http://localhost:4200`):
+
+```bash
+pnpm test:e2e
+```
+
+Run end-to-end tests in interactive UI mode:
+
+```bash
+pnpm test:e2e:ui
+```
+
 ## Testing
 
-Tests are written with Vitest through Angular's unit test builder.
-
-Current coverage includes:
+Unit tests are written with Vitest through Angular's unit test builder. Coverage includes:
 
 - Rendering both calculator headings
-- Premium calculator readiness state
-- Premium increase percentage calculation
-- Premium clear/reset behavior
+- State age-rule lookups against the AP guideline table, including permit/license edge cases
+- Masked date-input typing, backspace/delete, and cursor-position behavior
+- Years-licensed clipboard text for range, exact, and New Jersey month-bracket results
+- Premium calculator readiness, fee handling, clipboard text, and clear/reset behavior
 
-Spec files live beside the code they test. The main app spec is:
+The unit spec lives beside the code it tests:
 
 ```text
 src/app/app.spec.ts
 ```
 
+End-to-end tests are written with Playwright and drive a real browser against the running app. Coverage includes:
+
+- Years Licensed and Premium Workup calculator happy paths and edge cases
+- State-by-state permit/license eligibility scenarios (TX, MA, NJ, NC, CA, MT, PA, VA, AK, DE, MD, and more)
+- Theme toggle behavior across light, dark, and dusk
+
+Spec files:
+
+```text
+e2e/ap-workup.spec.ts
+e2e/deep-verify.spec.ts
+```
+
 ## Continuous Integration
 
-GitHub Actions runs on pushes and pull requests to `main`.
-
-The CI workflow:
+The `.github/workflows/ci.yml` workflow (inherited from the upstream project) runs on pushes and pull requests to `main`:
 
 1. Installs dependencies with pnpm
 2. Runs `pnpm test:ci`
 3. Runs `pnpm build`
-
-Workflow file:
-
-```text
-.github/workflows/ci.yml
-```
+4. Installs Playwright's Chromium browser
+5. Starts the app and runs `pnpm test:e2e` against it
+# ap-workup-themes
