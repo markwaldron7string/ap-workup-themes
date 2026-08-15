@@ -1,7 +1,7 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 
-type Theme = 'dark' | 'light' | 'dusk';
+type Theme = 'dark' | 'light' | 'dusk' | 'chrome';
 type Tone = 'success' | 'warn' | 'danger';
 type CalendarTarget = 'primary' | 'workup';
 
@@ -139,6 +139,37 @@ const STATE_NAMES: Record<string, string> = {
 
 const EXACT_STATES = ['MA', 'NC', 'CA'];
 
+const CHROME_COLOR_PROPS = [
+  '--blue',
+  '--blue-hover',
+  '--blue-glow',
+  '--btn-text',
+  '--bg-image',
+  '--bg',
+  '--surface',
+  '--surface-2',
+  '--border',
+  '--text',
+  '--muted',
+  '--label',
+  '--meta',
+  '--placeholder',
+  '--result-body',
+  '--clear-color',
+  '--clear-hover',
+  '--clear-hover-bg',
+  '--clear-hover-bd',
+  '--tile-bg',
+  '--range-bg',
+  '--copy-flag-bg',
+  '--copy-flag-border',
+  '--copy-flag-border-hover',
+  '--copy-btn-border',
+  '--copy-btn-icon',
+  '--copy-btn-hover-bg',
+  '--copy-btn-hover-border',
+];
+
 @Component({
   selector: 'app-root',
   imports: [NgTemplateOutlet],
@@ -146,6 +177,7 @@ const EXACT_STATES = ['MA', 'NC', 'CA'];
 })
 export class App {
   theme: Theme = 'dark';
+  chromeColor = '#9fc2ff';
 
   stateData = STATE_DATA;
   otherStates = Object.keys(STATE_NAMES)
@@ -187,6 +219,8 @@ export class App {
 
   constructor() {
     const savedTheme = (localStorage.getItem('calcTheme') as Theme | null) || 'dark';
+    const savedChromeColor = localStorage.getItem('chromeColor');
+    if (savedChromeColor) this.chromeColor = savedChromeColor;
     this.setTheme(savedTheme);
   }
 
@@ -194,6 +228,131 @@ export class App {
     this.theme = theme;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('calcTheme', theme);
+    if (theme === 'chrome') this.applyChromeColor(this.chromeColor);
+    else this.clearChromeColorOverride();
+  }
+
+  onChromeColorInput(hex: string): void {
+    this.applyChromeColor(hex);
+    localStorage.setItem('chromeColor', hex);
+  }
+
+  private applyChromeColor(hex: string): void {
+    this.chromeColor = hex;
+    const root = document.documentElement.style;
+    const { h, s, l } = this.hexToHsl(hex);
+    const hue = h.toFixed(0);
+
+    // 0 = full dark theme, 1 = full light theme. Ramped over a mid band so the
+    // switch from dark to light feels gradual as the picked color gets lighter,
+    // rather than snapping at one threshold.
+    const t = this.clamp((l - 0.35) / (0.75 - 0.35), 0, 1);
+    const isLight = t >= 0.5;
+
+    // Button/accent stays exactly what the user picked.
+    root.setProperty('--blue', hex);
+    root.setProperty('--blue-hover', this.shadeHex(hex, -15));
+    root.setProperty('--blue-glow', this.hexToRgba(hex, 0.3));
+    root.setProperty('--btn-text', isLight ? this.shadeHex(hex, -70) : '#ffffff');
+
+    const bgSat = Math.round(s * this.lerp(55, 35, t));
+    const bgL = this.lerp(9, 96, t);
+    const bgL2 = this.clamp(bgL + this.lerp(11, -14, t), 2, 98);
+    const bgL3 = this.clamp(bgL + this.lerp(4, -6, t), 2, 98);
+    const hsl = (sat: number, light: number) => `hsl(${hue} ${Math.round(sat)}% ${Math.round(light)}%)`;
+    const hsla = (sat: number, light: number, alpha: number) => `hsl(${hue} ${Math.round(sat)}% ${Math.round(light)}% / ${alpha})`;
+
+    // Everything below is anchored to bgL with a guaranteed minimum lightness
+    // gap, rather than interpolated independently — two independently
+    // interpolated values that start on opposite sides of the lightness
+    // scale are mathematically guaranteed to cross paths somewhere in the
+    // middle, which is exactly what was making borders (and, it turns out,
+    // body text) fade to invisible around the midpoint of the color wheel.
+    // Anchoring every foreground/border token to "background lightness plus
+    // or minus a fixed gap" keeps that gap constant at every single point.
+    const onLight = (gap: number) => (bgL <= 50 ? Math.min(96, bgL + gap) : Math.max(4, bgL - gap));
+
+    root.setProperty(
+      '--bg-image',
+      `linear-gradient(135deg, ${hsl(bgSat, bgL)} 0%, ${hsl(bgSat, bgL2)} 45%, ${hsl(bgSat, bgL3)} 75%, ${hsl(bgSat, bgL)} 100%)`,
+    );
+    root.setProperty('--bg', hsl(bgSat, bgL));
+    root.setProperty('--surface', hsla(Math.round(s * 35), onLight(22), this.lerp(0.35, 0.5, t)));
+    root.setProperty('--surface-2', hsl(Math.round(s * 35), onLight(12)));
+
+    const borderSat = Math.round(s * 28);
+    const borderL = onLight(45);
+    root.setProperty('--border', hsla(borderSat, borderL, this.lerp(0.32, 0.45, t)));
+    root.setProperty('--clear-hover-bd', hsla(borderSat, borderL, 0.4));
+
+    root.setProperty('--text', hsl(Math.round(s * 15), onLight(60)));
+    root.setProperty('--muted', hsl(Math.round(s * 20), onLight(45)));
+    root.setProperty('--label', hsl(Math.round(s * 20), onLight(40)));
+    root.setProperty('--meta', hsl(Math.round(s * 20), onLight(55)));
+    root.setProperty('--placeholder', hsl(Math.round(s * 15), onLight(25)));
+    root.setProperty('--result-body', hsl(Math.round(s * 15), onLight(58)));
+    root.setProperty('--clear-color', hsl(Math.round(s * 20), onLight(40)));
+    root.setProperty('--clear-hover', hsl(Math.round(s * 15), onLight(62)));
+    root.setProperty('--clear-hover-bg', isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.07)');
+    root.setProperty('--tile-bg', isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.05)');
+    root.setProperty('--range-bg', isLight ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.08)');
+
+    root.setProperty('--copy-flag-bg', hsl(Math.round(s * 35), onLight(14)));
+    root.setProperty('--copy-flag-border', hsla(borderSat, borderL, 0.45));
+    root.setProperty('--copy-flag-border-hover', hsla(borderSat, borderL, 0.65));
+    root.setProperty('--copy-btn-border', hsla(borderSat, borderL, 0.32));
+    root.setProperty('--copy-btn-icon', hsl(Math.round(s * 45), onLight(50)));
+    root.setProperty('--copy-btn-hover-bg', this.hexToRgba(hex, 0.14));
+    root.setProperty('--copy-btn-hover-border', hsla(borderSat, borderL, 0.5));
+  }
+
+  private clearChromeColorOverride(): void {
+    const root = document.documentElement.style;
+    for (const prop of CHROME_COLOR_PROPS) root.removeProperty(prop);
+  }
+
+  private hexToRgb(hex: string): { r: number; g: number; b: number } {
+    const clean = hex.replace('#', '');
+    const value = parseInt(clean, 16);
+    return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
+  }
+
+  private hexToRgba(hex: string, alpha: number): string {
+    const { r, g, b } = this.hexToRgb(hex);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  private shadeHex(hex: string, percent: number): string {
+    const { r, g, b } = this.hexToRgb(hex);
+    const adjust = (c: number) => Math.max(0, Math.min(255, Math.round(c + (percent / 100) * 255)));
+    const toHex = (c: number) => c.toString(16).padStart(2, '0');
+    return `#${toHex(adjust(r))}${toHex(adjust(g))}${toHex(adjust(b))}`;
+  }
+
+  private hexToHsl(hex: string): { h: number; s: number; l: number } {
+    const { r, g, b } = this.hexToRgb(hex);
+    const rn = r / 255, gn = g / 255, bn = b / 255;
+    const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn);
+    const l = (max + min) / 2;
+    const d = max - min;
+    let h = 0;
+    let s = 0;
+    if (d !== 0) {
+      s = d / (1 - Math.abs(2 * l - 1));
+      if (max === rn) h = 60 * (((gn - bn) / d) % 6);
+      else if (max === gn) h = 60 * ((bn - rn) / d + 2);
+      else h = 60 * ((rn - gn) / d + 4);
+    }
+    if (h < 0) h += 360;
+    return { h, s, l };
+  }
+
+  private lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
+  }
+
+  private clamp(v: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, v));
   }
 
   stateName(code: string): string {
